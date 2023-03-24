@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity  , StatusBar } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome'; 
@@ -133,7 +134,9 @@ const submit2  = ()  => {
 
  try {
    const response = await fetch( 'http://10.0.2.2:8000/user/loginuser'  , 
-   {   method: 'POST', 
+   {   
+    
+    method: 'POST', 
 
        headers: {
          'Accept': 'application/json',
@@ -156,9 +159,10 @@ const submit2  = ()  => {
      console.log(json);     
 
      if( json.message  === "Login successful") {
-             
-      navigation.navigate("Home");
-      console.log( "vbvhv")  ; 
+       
+     // console.log(json.data.token );  
+      navigation.navigate("Home" ,   { token  : json.data.token  } );
+     // console.log( "vbvhv")  ; 
 
        
 
@@ -192,13 +196,23 @@ console.log("bhjgnagxaxh")  ;
    
 <View style={styles.v1}  >
 
-<Text>ygjggh gugu </Text>
+<LinearGradient
+        // Background Linear Gradient
+        colors={["rgba(120, 175, 234, 1)" , 
+          "rgba(59, 77, 97, 1)]}" ]} 
+        start={{ x: 0, y: 0.1 }}
+        end={{ x: 0, y: 0.6 }}
+        style={styles.v1_background}
+      >
+
+
+</LinearGradient>
 
 </View>  
 
 <View style={styles.v2}  >
 
-<Text>second </Text>
+<Text></Text>
 
 </View>  
 
@@ -207,14 +221,15 @@ console.log("bhjgnagxaxh")  ;
   <TouchableOpacity  style={  login ? styles.to2 :  styles.to1}   
       onPress = {  ()  =>  { handler1() }}
   >
-    <Text> login </Text>
+
+    <Text    > login </Text>
     </TouchableOpacity>
    
     
     <TouchableOpacity  style={  login ? styles.to1 :  styles.to2 }
           onPress = {   ()  =>  { handler2() }}
          >
-    <Text>  Signup </Text>
+    <Text >  Signup </Text>
     </TouchableOpacity>
   
   </View> 
@@ -224,20 +239,39 @@ console.log("bhjgnagxaxh")  ;
     
 <View style={styles.v4} >
 
-         
-   <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
+
+  
+        <View style={styles.ip1}  >
+   <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6} 
               placeholder="Email Address"    value= { email1 }  onChangeText= { onChangeEmail1 } />
+         
+          
+         <View   style={styles.v6} > 
+        <Icon  name="user" size={27} /> 
+         </View>
+       </View>
+   
+         
+
+       <View style={styles.ip2}   >
+   <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6} 
+            placeholder="Password"  value= { Password2  }   onChangeText = {  onChangePassword2}/>     
+
+     <View   style={styles.v6} > 
+        <Icon  name="eye-slash" size={27} /> 
+         </View>
+       </View>
 
 
-   <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2} 
-            placeholder="Password"  value= { Password2  }   onChangeText = {  onChangePassword2}/>        
-
-<View style={styles.ip3} > 
-  <Icon     name="check"  style={{ borderWidth : 4 , borderColor : "pink"  , padding : 5 ,  }}      size={22} /> 
+<View style={styles.ip7} > 
+  <Icon     name="check"  style={{ borderWidth : 4  , padding : 5 ,  }}      size={22} /> 
+  <TouchableOpacity
+      onPress = {  ( ) => { navigation.navigate("PlasticProcessing")}}
+  >
 <Text> Remember me</Text>      
-
+</TouchableOpacity>
 <TouchableOpacity  
-   onPress = {  ( ) => { navigation.navigate("Home")}}>
+   onPress = {  ( ) => { navigation.navigate("SummaryTable")}}>
 <Text>Forgot Password?</Text>
 </TouchableOpacity>
     
@@ -258,10 +292,10 @@ console.log("bhjgnagxaxh")  ;
   
 <View  style={styles.ip1} >
     
-    <TextInput  autoCapitalize='none'   autoCorrect={ false}      
-            placeholder="Name"  value= {   name }   onChangeText = {onChangeName   }/>    
+    <TextInput  autoCapitalize='none'   autoCorrect={ false}   style={styles.ip6}      
+            placeholder="Name"  value= {   name }   onChangeText = {onChangeName }/>    
         
-        <View     > 
+        <View   style={styles.v6}  > 
         <Icon  name="user" size={27} /> 
          </View>
     
@@ -272,11 +306,11 @@ console.log("bhjgnagxaxh")  ;
   
 <View   style={styles.ip2}  >  
 
-<TextInput  autoCapitalize='none'   autoCorrect={ false} 
+<TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6}  
                    placeholder="Email Address"   value= { email }   onChangeText = {  onChangeEmail } />
   
  
-  <View   > 
+  <View    style={styles.v6}  > 
   <Icon  name="envelope" size={27} /> 
   </View>
     
@@ -287,10 +321,10 @@ console.log("bhjgnagxaxh")  ;
 
 <View   style={styles.ip3} >   
 
-<TextInput  autoCapitalize='none'   autoCorrect={ false}  
+<TextInput  autoCapitalize='none'   autoCorrect={ false}   style={styles.ip6} 
          placeholder="Password"  value= { password }  onChangeText = {  onChangePassword} />        
 
-<View  > 
+<View   style={styles.v6}  > 
   <Icon  name="eye-slash" size={27} /> 
   </View>
     
@@ -301,10 +335,10 @@ console.log("bhjgnagxaxh")  ;
  
 
 <View  style={styles.ip4}  >   
-<TextInput  autoCapitalize='none'   autoCorrect={ false}   
+<TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip6} 
          placeholder="Re-enter  Password"  value= { password1  }  onChangeText = {  onChangePassword1 }/>    
 
-<View  >  
+<View   style={styles.v6}  >  
 
   <Icon  name="eye-slash" size={27} /> 
   </View>
@@ -315,9 +349,9 @@ console.log("bhjgnagxaxh")  ;
 
 <View  style={styles.ip5}>   
 
-<TextInput  autoCapitalize='none'   autoCorrect={ false} 
+<TextInput  autoCapitalize='none'   autoCorrect={ false}   style={styles.ip6} 
          placeholder="Organisation Name"  value= { organization }   onChangeText = {  onChangeOrganization }  />      
-<View  >  
+<View  style={styles.v6}  >  
 
 <Icon  name="building" size={27} /> 
 </View>
@@ -354,12 +388,20 @@ console.log("bhjgnagxaxh")  ;
         position : "absolute"  , 
         height :  "30%"    , 
         width :  "100%"  , 
-       backgroundColor : '#78AFEA'  , 
+       backgroundColor : '#fff'  , 
         alignItems: "center"  , 
         justifyContent : "center"  , 
        
     }
+      , 
 
+      v1_background : {
+          
+        flex : -1  , 
+         width : "100%"  , 
+         height : "100%"  , 
+
+      }
     , 
     v2 : {
           
@@ -384,10 +426,10 @@ console.log("bhjgnagxaxh")  ;
          zIndex :  5 , 
          shadowColor : "#00000"  ,
          shadowRadius : 2 , 
-         elevation  : 6 , 
-         borderRadius : 10 , 
+         elevation  : 6 ,
          justifyContent : "flex-start"   , 
          flexDirection : "row"  , 
+         alignItems: "center" , 
 
       }
    , 
@@ -399,8 +441,8 @@ console.log("bhjgnagxaxh")  ;
     width :  "90%"  , 
     top: "20%"  , 
     height : "50%"  , 
-    backgroundColor : "red"  , 
-    elevation  : 6 , 
+    backgroundColor : "#fff"  , 
+    elevation  : 2 , 
     zIndex :  5 ,
      
     alignItems : "center"  , 
@@ -412,14 +454,16 @@ console.log("bhjgnagxaxh")  ;
       position : "absolute"  , 
       top : "0%"  , 
       height :  "10%"   , 
-      width :  "100%"  , 
-      paddingLeft : 15 , 
+      width :  "95%"  , 
       textAlign : "left"  , 
       borderColor: "#000000" , 
        borderWidth :  1 , 
        backgroundColor : "pink" , 
        flexDirection : "row"  , 
-
+       justifyContent: "space-between" , 
+     borderRadius : 10 , 
+     borderColor : "grey" , 
+     borderWidth : 2 , 
 
     }  , 
 
@@ -430,31 +474,36 @@ console.log("bhjgnagxaxh")  ;
     position : "absolute"  , 
     top : "16%"  , 
     height :  "10%"   , 
-    width :  "100%"  , 
-    paddingLeft : 15 , 
+    width :  "95%"  , 
+   
     textAlign : "left"  , 
     borderColor: "#000000" , 
      borderWidth :  1 , 
      backgroundColor : "pink"  , 
      flexDirection : "row"  , 
-
+     justifyContent: "space-between" , 
+     borderRadius : 10 , 
+     borderColor : "grey" , 
+     borderWidth : 2 , 
    }  ,  
 
 
    ip3 : {
         
     height :  "10%"   , 
-    width :  "100%"  ,   
+    width :  "95%"  ,   
     position : "absolute"  , 
     top : "32%"  , 
-    paddingLeft : 15 , 
+
     textAlign : "left"  , 
     borderColor: "#000000" , 
      borderWidth :  1 , 
-     backgroundColor : "blue" ,
+     backgroundColor : "#fff" ,
      flexDirection : "row", 
-
-
+     justifyContent: "space-between" , 
+     borderRadius : 10 , 
+     borderColor : "grey" , 
+     borderWidth : 2 , 
 
   }  , 
   
@@ -465,14 +514,18 @@ console.log("bhjgnagxaxh")  ;
     top : "48%" , 
     position : "absolute"  , 
     height :  "10%"   , 
-    width :  "100%"  ,   
-    paddingLeft : 15 , 
+    width :  "95%"  ,   
+  
     textAlign : "left"  , 
     borderColor: "#000000" , 
      borderWidth :  1 , 
      backgroundColor : "pink"   , 
      flexDirection : "row"  , 
+     justifyContent: "space-between" , 
 
+     borderRadius : 10 , 
+     borderColor : "grey" , 
+     borderWidth : 2 , 
 
   }  , 
   
@@ -483,17 +536,50 @@ console.log("bhjgnagxaxh")  ;
     top : "64%" ,
     position : "absolute"  , 
     height :  "10%"   , 
-    width :  "100%"  ,   
-    paddingLeft : 15 , 
+    width :  "95%"  ,   
+
     textAlign : "left"  , 
     borderColor: "#000000" , 
      borderWidth :  1 , 
      backgroundColor : "pink" ,  
       flexDirection : "row"   , 
-
+      justifyContent: "space-between" , 
+      borderRadius : 10 , 
+      borderColor : "grey" , 
+      borderWidth : 2 , 
 
     }  , 
+    
 
+     ip6 : {
+
+      height : "100%"  , 
+      width : "90%"  , 
+      backgroundColor : "#fff" , 
+      textAlignVertical : "center" , 
+      padding : 0 , 
+      paddingLeft : 5 , 
+
+
+
+     }  ,  
+
+   ip7 : {
+
+    height :  "10%"   , 
+    width :  "95%"  ,   
+    position : "absolute"  , 
+    top : "32%"  , 
+    textAlign : "left"  , 
+     backgroundColor : "#fff" ,
+     flexDirection : "row", 
+     justifyContent: "space-between" , 
+  
+
+
+   }
+
+     ,
 
    v5 : {
     
@@ -502,25 +588,42 @@ console.log("bhjgnagxaxh")  ;
     width :  "90%"  , 
     top : "20%"  , 
     height :  "65%" , 
-    backgroundColor  : "green"  , 
-    elevation  : 6 , 
+    backgroundColor  : "#fff"  , 
+     elevation : 2, 
     zIndex :  5 , 
     alignItems : "center"  , 
 
    }   , 
+  
+    v6 : {
 
+      height : "100%"  , 
+      width : "10%"  , 
+      backgroundColor : "#fff" , 
+      padding : 0 , 
+      paddingLeft : 5 , 
+      alignItems :"flex-start" , 
+      justifyContent : "center" , 
+
+
+
+
+    }
+    , 
    to2 : {
          
-    backgroundColor : "red"  , 
+      
       borderBottomWidth : 5 ,  
-       borderColor : "black"  , 
+       borderColor : "#333D79"  , 
+       height : "50%"  ,
         
    }
    ,  
    
    to1 : {
        
-        
+    height : "50%"  ,
+
    }
    ,    
    
@@ -528,16 +631,19 @@ console.log("bhjgnagxaxh")  ;
    to4 : {
         
        
-    height :  "10%"   , 
-    width :  "50%"  ,   
+    height :  "15%"   , 
+    width :  "40%"  ,   
     position : "absolute"  , 
-    top : "95%"  , 
+    top : "93%"  , 
     zIndex : 10 , 
     textAlign : "center"  , 
-    borderColor: "#000000" , 
      borderWidth :  1 , 
-     backgroundColor : "blue" ,
-     flexDirection : "row", 
+     backgroundColor : "#333D79" ,
+     flexDirection : "row",  
+     borderRadius : 10 ,
+     borderWidth : 5 , 
+     borderColor : "#fff"
+     
 
    }
    ,    

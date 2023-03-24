@@ -4,7 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
-export default function Home( { navigation  }) {
+export default function Home( { navigation   , route  }) {
+  
+   // console.log( "inhome")  ; 
+  // console.log(  route.params.token)  ; 
+
 
     return (
 
@@ -21,19 +25,19 @@ export default function Home( { navigation  }) {
     
 
        <TouchableOpacity style={styles.t1} 
-        onPress = {  ( ) => { navigation.navigate("WasteCollection"   ,  {    screentype :  "iwc"}     )}}>
-           <Text>Informal Waste Collector</Text>
+        onPress = {  ( ) => { navigation.navigate("WasteCollection"   ,  {   token : route.params.token ,   name : "Informal Waste Collector"   ,  screentype :  "iwc"  }     )}}>
+           <Text  style={styles.t3}  >Informal Waste Collector</Text>
        </TouchableOpacity>  
 
        
       <TouchableOpacity style={styles.t1}  
-       onPress = {  ( ) => { navigation.navigate("WasteCollection"   ,     {    screentype :  "cud"}    )}}>
+       onPress = {  ( ) => { navigation.navigate("WasteCollection"   ,     {  token : route.params.token  ,    name : "Clean-up Drive" ,    screentype :  "cud"}    )}}>
       <Text>Clean-up Drive</Text> 
       </TouchableOpacity> 
 
 
      <TouchableOpacity style={styles.t1}  
-      onPress = { ( ) => { navigation.navigate("WasteCollection"   ,     {    screentype :  "os"}    )} }>
+      onPress = { ( ) => { navigation.navigate("WasteCollection"   ,     {  token : route.params.token  ,     name : "Other Source" ,   screentype :  "os"}    )} }>
      <Text>Other Sources</Text> 
       </TouchableOpacity>  
       </View>
@@ -51,17 +55,24 @@ export default function Home( { navigation  }) {
       <View style={styles.v2 }>
     
 
-      <TouchableOpacity style={styles.t1}>
+      <TouchableOpacity style={styles.t1}
+        onPress = { ( ) => { navigation.navigate("Processing"   ,     {    token : route.params.token  ,     name : "Segregation"  ,  screentype :  "seggregation"}    )} }
+      >
          <Text>Segregation</Text>
       </TouchableOpacity>  
 
        
-      <TouchableOpacity style={styles.t1}>
+      <TouchableOpacity style={styles.t1}  
+      
+      onPress = { ( ) => { navigation.navigate("Processing"   ,     {  token : route.params.token  ,    name : "Processing"  ,   screentype :  "proccesing"}    )} }
+      >
       <Text>Processing</Text>
       </TouchableOpacity> 
 
 
-     <TouchableOpacity style={styles.t1}>
+     <TouchableOpacity style={styles.t1} 
+       onPress = { ( ) => { navigation.navigate("Processing"   ,     {  token : route.params.token ,     name : "Transportation"   ,     screentype :  "transportation"}    )} }
+     >
      <Text>Transportation</Text>
       </TouchableOpacity>  
       </View>
@@ -80,20 +91,24 @@ export default function Home( { navigation  }) {
       <View style={styles.v2 }>
     
 
-      <TouchableOpacity style={styles.t1}>
+      <TouchableOpacity style={styles.t1} 
+         onPress = { ( ) => { navigation.navigate("Sales"   ,     {   token : route.params.token  ,     name : "Plastic Waste"  ,   screentype :  "plastic_waste"}    )} }
+      >
 
       <Text>Plastic Waste</Text>
       </TouchableOpacity>  
 
        
-      <TouchableOpacity style={styles.t1}>
+      <TouchableOpacity style={styles.t1} 
+        onPress = { ( ) => { navigation.navigate("Sales"   ,     {    token : route.params.token   ,   name : "Other Waste"  ,    screentype :  "other_waste"}    )} }
+      >
       <Text>Other Waste</Text>
 
       </TouchableOpacity> 
 
 
-     <TouchableOpacity style={styles.t1}>
-
+     <TouchableOpacity style={styles.t4}>
+ 
       </TouchableOpacity>  
 
       </View>  
@@ -128,11 +143,12 @@ export default function Home( { navigation  }) {
           flex : -1 , 
           width : "100%"  ,  
           height : "80%"   , 
-           backgroundColor : "green"  , 
+           backgroundColor : "#fff"  , 
            justifyContent : "flex-start"   , 
            flexDirection : "row"  ,
-            alignItems : "center"  , 
+            alignItems : "flex-start"  , 
             justifyContent :  "space-around" , 
+           
 
       }
   , 
@@ -142,8 +158,11 @@ export default function Home( { navigation  }) {
           flex : -1 , 
           width : "30%"  ,  
           height : "50%"   ,  
-          backgroundColor : "red"  , 
-          
+          backgroundColor : "pink"  , 
+          borderRadius: 10 , 
+        justifyContent : "flex-end"  , 
+        alignItems : "center"  , 
+        padding : 10 , 
          
 
        }
@@ -158,10 +177,26 @@ export default function Home( { navigation  }) {
         left : "3%"  , 
         letterSpacing: -0.408 ,
      
-        
-         
+       }  ,  
 
-       }  , 
+         t3: {
+
+
+
+        }  , 
+       
+        t4 : {
+
+     backgroundColor : "#fff" ,
+     width : "30%"  ,  
+     height : "50%"   ,  
+    
+     borderRadius: 10 , 
+   justifyContent : "flex-end"  , 
+   alignItems : "center"  , 
+   padding : 10 , 
+    
+        }  , 
 
        v3 : {
                

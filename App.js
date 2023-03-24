@@ -5,12 +5,14 @@ import { StyleSheet  } from 'react-native';
 import LogIn from './screens/LogIn';
 import   Home from './screens/Home' ;
 import  WasteCollection from './screens/WasteCollection'  ; 
-import  PlasticProcessing from './screens/PlasticProcessing'  ; 
+import  Processing from './screens/Processing'  ; 
 import   About from './screens/About' ; 
-import SummaryWasteCol from './screens/SummaryWasteCol' ; 
-import SummarySegProc from './screens/SummarySegProc' ; 
-import SummarySales from './screens/SummarySales' ; 
+import Summary from './screens/Summary' ; 
+import Sales from './screens/Sales'  ; 
+import SummaryView from './screens/SummaryView' ; 
 import SummaryTable from './screens/SummaryTable'  ;
+import PlasticProcessing from './screens/PlasticProcessing'  ;
+
 
 
 
@@ -34,6 +36,10 @@ export default function App() {
            
          <Stack.Screen name="Home" component={ Home}  options={{    headerStyle: {
       backgroundColor: '#78AFEA'   } ,   headerTintColor:  '#fff'     }}   
+       />   
+
+       <Stack.Screen name="PlasticProcessing" component={ PlasticProcessing}  options={{    headerStyle: {
+      backgroundColor: '#78AFEA'   } ,   headerTintColor:  '#fff'     }}   
        />  
       
       <Stack.Screen name="About" component={ About }  options={{    headerStyle: {
@@ -47,23 +53,48 @@ export default function App() {
 
 
        
-      <Stack.Screen name= "Summary" component={SummaryWasteCol }  options={{    headerStyle: {
+      <Stack.Screen name= "Summary" component={Summary }  options={{    headerStyle: {
+      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'   , headerShadowVisible : false  }}    
+          
+       />    
+
+
+         
+      <Stack.Screen name= "SummaryView" component={ SummaryView }  options={{    headerStyle: {
       backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'   , headerShadowVisible : false  }}    
           
        />   
         
-        <Stack.Screen name= "WasteCollection" component={ WasteCollection }  options={{    headerStyle: {
-      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'   , headerShadowVisible : false  }}    
+        
+        <Stack.Screen name= "WasteCollection" component={ WasteCollection }  options={  ({ route }) => ({   headerTitle : route.params.name   , 
+           headerStyle: {
+      backgroundColor: '#fff'   }   
+               })}  
           
        />  
 
         
-      <Stack.Screen name= "PlasticProcessing" component={ PlasticProcessing }  options={{    headerStyle: {
-      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#78AFEA'   , headerShadowVisible : false  }}    
+      <Stack.Screen name= "Processing" component={ Processing }  options={
+
+       ({ route }) => ({   headerTitle : route.params.name   , 
+  headerStyle: {
+backgroundColor: '#fff'   }   
+      })
+      }
           
        />  
 
-            
+         
+        <Stack.Screen name= "Sales" component={Sales }  options={  
+
+({ route }) => ({   headerTitle : route.params.name   , 
+  headerStyle: {
+backgroundColor: '#fff'   }   
+      })
+        }
+          
+       />  
+
        
          </Stack.Navigator>
 
