@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity    , StatusBar } from 'react-native';
+import { StyleSheet, Text, View  , TextInput , Dimensions  ,  TouchableOpacity    , StatusBar } from 'react-native';
 
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome';   
 import * as Location from "expo-location";  
 import { Dropdown } from 'react-native-element-dropdown';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
@@ -36,15 +37,87 @@ export default function Sales ( {   route , navigation  }) {
   
     const [ state1  , onState1Change  ] = React.useState ( "" );   // willbe changed to name later   
     
-    const [ state2  , onState2Change   ] = React.useState ( "Code of Waste Management Unit" );  
-    const [ state3  , onState3Change  ] = React.useState ( "" );     
-    const [   state4  , onState4Change   ] = React.useState ( "Location" );    // gps location 
+    const [ state2  , onState2Change   ] = React.useState ( "" );  
+    const [ state3  , onState3Change  ] = React.useState ( "" );       // date 
+    const [   state4  , onState4Change   ] = React.useState (  false );    // gps location 
     const [ state5  , onState5Change  ] = React.useState (  0  );      // state 5, 6 will be used to multiply . 
     const [   state6  , onState6Change   ] = React.useState (  0  ); 
      const [ state7 , onState7Change  ] = React.useState (  0  );   
     const [   state8  , onState8Change   ] = React.useState ( "" );   // saving the code , to replace state1 with name 
     const [   state11  , onState11Change   ] = React.useState ( "" ); 
+      
+
+
      
+  // stages of  plastic  
+
+  
+  const [isFocus3, setIsFocus3] = React.useState(false);    // plastic 
+  const [value4, setValue4] = React.useState( "");
+  const [value5 , setValue5] = React.useState( "Processing stage");
+  const [ ProcessingStage , setProcessingStage ] =  React.useState( []); 
+
+
+  
+  const  handler5  = () => {   
+  
+    const pushdata =  async () => {  
+  
+      try {
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        {    
+          method: 'POST', 
+     
+            headers: {
+              'Accept': 'application/json',
+              'Content-type': 'application/json'  ,  
+              'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjQyMTI0MmYyMGVjZWI1MDhjNDdlYjJiIiwiZXhwIjoxNjgwNjg0ODM2fQ.lTKqS_zCzPy1wdsmsO4fuzBNrF2zB76wXyhRV2uBNVg" , 
+          
+          }
+      , 
+      body: JSON.stringify({
+
+        "stage_of_processing" : value4
+     }),
+     }
+       );  
+  
+        const json = await response.json(); 
+     
+          console.log(json); 
+          setProcessingStage( json.data) ; 
+
+      } catch (error) {
+        console.error(error);
+      }  
+     };
+  
+    setIsFocus3(true);
+    pushdata()  ; 
+    
+    }
+
+
+    const  handler6  = (   title ) => {     
+      
+
+      if(  value5 === "Processing stage"  ){
+       
+        setValue5(  title ) ; 
+        setProcessingStage([]) ;
+      }else{
+           
+        let  newTitle =  value5 + ","+ title ; 
+        setValue5(  newTitle ) ; 
+        setProcessingStage([]); 
+      }
+   
+    }
+
+
+ 
+
+
     const dropdowndata1 = [ 
                                  // types of plastic 
       { label: 'PET', value: '1' },     
@@ -52,7 +125,7 @@ export default function Sales ( {   route , navigation  }) {
       { label: 'PVC', value: '3' },
       { label: 'LDPE', value: '4' }, 
       { label: 'PP', value: '5' },
-      { label: 'ps', value: '6' },
+      { label: 'PS', value: '6' },
       { label: 'MLP', value: '7' }, 
   
     ];  
@@ -90,7 +163,7 @@ export default function Sales ( {   route , navigation  }) {
       let location = await Location.getCurrentPositionAsync({});
       console.log( location.coords.longitude) ; 
       console.log( location.coords.latitude) ; 
-      setLocation( `${location.coords.longitude},${location.coords.latitude}`);
+      setLocation( `${location.coords.latitude},${location.coords.longitude}`);
    
     })();
   }, []);
@@ -98,20 +171,75 @@ export default function Sales ( {   route , navigation  }) {
   
   
     const screentype  =   route.params.screentype   ; 
+
+   
+    //   coding to set the date 
+  // state3  is used to set date 
+  
+
+  let  date1 = new Date() ;
+  console.log( date1) ; 
+  date1.setDate(date1.getDate() - 7);
+
+  let finalDate =  date1.getFullYear()+ ','+ (date1.getMonth()+1)  + ',' + date1.getDate();
+  
+ 
+ 
+  
+  const [   mindate  ,  setMinDate  ] = React.useState(  date1 ) ;
+
+
+
+  console.log( mindate.getFullYear() ) ; 
+
+
+
+
+  const [ date, setDate ] = React.useState(  new Date()) ;
+  const [  mode , setMode ] = React.useState( "date") ;
+  const [ show , setShow  ] = React.useState(  false) ;
+  
+  const onChange = (  event , selectedDate)  => {
+         
+    const currentDate = selectedDate ||  date ; 
+    
+    setShow(  Platform.OS === "ios") ; 
+    setDate( currentDate) ; 
+
+    let tempDate = new Date( currentDate) ;
+    let fDate = tempDate.getDate() + "-"  + (tempDate.getMonth()+1 )  + "-" +  tempDate.getFullYear() ; 
+     onState3Change( fDate) ; 
+    console.log( fDate) ; 
+
+
+  }  
+
+  const showMode = (  currentMode  ) => {
+
+    setShow( true ) ;
+    setMode(  currentMode) ; 
+}
+
+
+
+
+
+
+
         
     const submit = () => {     // plastic waste 
   
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://10.0.2.2:8000/user/plasticwaste'  , 
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/plasticwaste'  , 
         {    
           method: 'POST', 
      
             headers: {
               'Accept': 'application/json',
               'Content-type': 'application/json'  ,  
-              'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc5OTE4ODYzfQ.syno7Fte-6iQNSnIdBc1bmvGQ5__1S6KJnUwEl9BffI'
+              'token' :  token , 
           
           }
       , 
@@ -168,14 +296,14 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://10.0.2.2:8000/user/otherwaste'  , 
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/otherwaste'  , 
         {    
           method: 'POST', 
      
             headers: {
               'Accept': 'application/json',
               'Content-type': 'application/json'  ,  
-              'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc4ODcwMDc5fQ.D-5eGqRClgxIUN3v1zCo3JY1mUR1pao0zHl-_DNKa9g'
+              'token' :   token , 
           
           }
       , 
@@ -252,14 +380,14 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://10.0.2.2:8000/user/salesplasticwasteentry'  , 
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/salesplasticwasteentry'  , 
         {    
           method: 'POST', 
      
             headers: {
               'Accept': 'application/json',
               'Content-type': 'application/json'  ,  
-              'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc5OTE4ODYzfQ.syno7Fte-6iQNSnIdBc1bmvGQ5__1S6KJnUwEl9BffI'
+              'token' :  token , 
           
           }
       , 
@@ -269,13 +397,13 @@ export default function Sales ( {   route , navigation  }) {
 "bu_code":  state8 ,
 "buyer_organisation":  state1 ,
 "wmu_code": state2  ,
-"capture_gps":  state4  , 
+"capture_gps":  location   , 
 "date_of_entry":  state3  ,
 "type_of_plastic":  dropdownValue1 , 
-"stage_of_processing":  state11  ,
-"transport_quantity":  state5 , 
-"rate_per_kg": state6  ,
-"total_cost":   state7 
+"stage_of_processing":  value5 ,
+"quantity":  `${state5}` , 
+"rate_per_kg": `${state6}`  ,
+"total_cost":   `${state7}`  , 
      
      }),
      }
@@ -283,9 +411,29 @@ export default function Sales ( {   route , navigation  }) {
   
         const json = await response.json(); 
      
-          console.log(json);       
+          console.log(json);   
 
-          alert( "Information submitted Successfully !"); 
+          if(   json.message ===  "submitted Successfully." ) {
+          
+            alert(  json.message );
+            onState8Change("") ;
+            onState1Change("") ; 
+            onState2Change("") ; 
+            onState4Change(  false ) ;
+            onState3Change("") ;
+            onState5Change( 0 ) ; 
+            onState6Change( 0 ) ; 
+            onState7Change( 0 ) ; 
+            setValue1("") ;
+            setValue5("Processing stage") ; 
+            setValue4("")  ; 
+  
+  
+          }else{
+  
+            alert(  json.message );
+          }
+  
      /*  */
       } catch (error) {
         console.error(error);
@@ -318,14 +466,14 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://10.0.2.2:8000/user/salesotherwasteentry'  , 
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/salesotherwasteentry'  , 
         {    
           method: 'POST', 
      
             headers: {
               'Accept': 'application/json',
               'Content-type': 'application/json'  ,  
-              'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc4OTQ2MjAxfQ._4eLOEn2-qlo3UGq44RMMjxn0X6Zfl2UEAkvjokH5UM'
+              'token' :  token , 
           
           }
       , 
@@ -334,12 +482,12 @@ export default function Sales ( {   route , navigation  }) {
         "bu_code": state8,
         "buyer_organisation": state1,
         "wmu_code":  state2,
-        "capture_gps": state4,
+        "capture_gps":   location ,
         "date_of_entry": state3,
         "type_of_waste": dropdownValue1,
-        "quantity_of_waste": state5 ,
-        "rate_per_kg": state6 ,
-        "total_cost": state7
+        "quantity": `${state5}`,
+        "rate_per_kg": `${state6}` ,
+        "total_cost":`${state7}`
      
      }),
      }
@@ -349,7 +497,26 @@ export default function Sales ( {   route , navigation  }) {
      
           console.log(json); 
           
-          alert( "Information submitted Successfully !"); 
+          if(   json.message ===  "submitted Successfully." ) {
+          
+            alert(  json.message );
+            onState8Change("") ;
+            onState1Change("") ; 
+            onState2Change("") ; 
+            onState4Change(  false ) ;
+            onState3Change("") ;
+            onState5Change(0) ; 
+            onState6Change( 0) ; 
+            onState7Change( 0 ) ; 
+            setValue1("") ;
+  
+  
+  
+          }else{
+  
+            alert(  json.message );
+          }
+  
      /*  */
       } catch (error) {
         console.error(error);
@@ -419,9 +586,14 @@ export default function Sales ( {   route , navigation  }) {
 
      
   
-    const gpsHandler = () => { 
-  onState4Change( location) ;
-  alert("Successfully captured GPS!") ; 
+    const gpsHandler = () => {  
+
+
+      console.log( state4) ; 
+      if(  state4 ===  false){
+        onState4Change( !state4 ) ;
+      }
+      alert("Successfully captured GPS!") ; 
     }
 
 
@@ -446,16 +618,35 @@ export default function Sales ( {   route , navigation  }) {
         barStyle="dark-content"  
         backgroundColor = '#fff'
        />
-  
+      
+
+      {
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
+
+  }
               <View   style={styles.v1} >   
          
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
-                        placeholder="Code of Buyer"   value= {  state1 }  onChangeText= { onState1Change } />
+                 placeholder="Code of Buyer"   value= {  state1 }  onChangeText= { onState1Change } />
   
               <TouchableOpacity  style={styles.to1}  
               onPress = {( ) => { submit() }  }    
               > 
-                    <Icon  name="arrow-right" size={27} color = "red" /> 
+                    <Icon  name="arrow-right" size={27} color = "#fff" /> 
               </TouchableOpacity >    
   
         
@@ -477,14 +668,23 @@ export default function Sales ( {   route , navigation  }) {
                 
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2} 
                      value= {  state2 }  onChangeText= { onState2Change }
-                     placeholder="Code of Waste Management Unit"
+                            placeholder="Code of Waste Management Unit"
                                        />
   
                                        
-              <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2}  
-               value= {  state3 }  onChangeText= { onState3Change }
-                        placeholder="Date of Entry (dd-mm-yyyy)"
-                                       />
+              <View style={styles.ip2} >                       
+            <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.dateInput}   
+             value= {  state3 }  onChangeText= { onState3Change }
+                   placeholder="Date of Entry (dd-mm-yyyy)"
+                                     />
+            <TouchableOpacity  
+            onPress={ () => { showMode( 'date')}}
+            style={styles.to7 }>               
+            <MaterialCommunityIcons name="calendar-range" size={24} color="#000000" />
+            </TouchableOpacity>  
+                       </View>
+
+
   
              <View  style={styles.v5} > 
        
@@ -494,8 +694,8 @@ export default function Sales ( {   route , navigation  }) {
                <Text style={styles.t1} >Capture GPS</Text>   
               </TouchableOpacity>      
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip3}  
-                          value= {  state4 }  onChangeText= { onState4Change }
-                        placeholder="Captured Location"
+                            editable= { false}
+                            placeholder={ ( state4 )? location : "Location" }
                     />
               </View>   
   
@@ -546,27 +746,53 @@ export default function Sales ( {   route , navigation  }) {
   
   
                <View  style={styles.ip7}> 
-                
+              {/*   
                 <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5} 
                   value= {  state11 }  onChangeText= { onState11Change }
-                          placeholder="Stage of Processing"
-                      />  
-    
+                  placeholderTextColor='#ffffff8C'      placeholder="Stage of Processing"
+                      />   */}
+               
+                       
+           <View style={ styles.ip5}>
+         <Dropdown 
+        
+        style={[styles.dropdown, isFocus3 && { borderColor: 'blue' }]}
+        placeholderStyle={styles.placeholderStyle1}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={ ProcessingStage }
+        labelField="TITLE"
+        valueField="ID"
+        value={ value5 }
+        placeholder=  { value5 }
+        onFocus={() => handler5() }
+        onBlur={() => setIsFocus3(false)}
+        onChange={item => {
+        
+        setValue4( item.TITLE) ;
+        handler6(  item.TITLE)  ; 
+        setIsFocus3(false);
+        }}
+       
+      />
+
+   </View> 
                        
                     <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip5} 
-                     value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5) }  }
-                          placeholder="Quantity (in KGs)"
+                     value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5) }  }  keyboardType="number-pad"
+                     placeholderTextColor='#ffffff8C'    placeholder="Quantity (in KGs)"  
                       />
                        
                        </View>
                        
                        <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip4} 
-                     value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }
-                          placeholder="Rate/KG (INR)"
+                     value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }   keyboardType="number-pad"
+                     placeholderTextColor='#ffffff8C'      placeholder="Rate/KG (INR)"
                       />
       
                     <TextInput   autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4} 
-                          placeholder= { `Total Amount (INR) = ${ state7}` }    editable= { false }
+                       placeholderTextColor='#ffffff8C'       placeholder= { `Total Amount (INR) = ${ state7}` }    keyboardType="number-pad"
                       />
     
   
@@ -643,16 +869,36 @@ export default function Sales ( {   route , navigation  }) {
         barStyle="dark-content"  
         backgroundColor = '#fff'
        />
-  
+    
+
+    {
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
+
+  }
+
               <View   style={styles.v1} >   
          
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
-                        placeholder="Code of Buyer"   value= {  state1 }  onChangeText= { onState1Change } />
+                       placeholder="Code of Buyer"   value= {  state1 }  onChangeText= { onState1Change } />
   
               <TouchableOpacity  style={styles.to1}  
               onPress = {( ) => { submit1() }  }    
               > 
-                 <Icon  name="arrow-right" size={27} color = "red" /> 
+                 <Icon  name="arrow-right" size={27} color = "#fff" /> 
               </TouchableOpacity >    
   
         
@@ -674,14 +920,20 @@ export default function Sales ( {   route , navigation  }) {
                 
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2} 
                         value= {  state2 }  onChangeText= { onState2Change }
-                        placeholder="Code of Waste Management Unit"
+                            placeholder="Code of Waste Management Unit"
                                        />
   
-                                       
-              <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2}  
-               value= {  state3 }  onChangeText= { onState3Change }
-                        placeholder="Date of Entry (dd-mm-yyyy)"
-                                       />
+                  <View style={styles.ip2} >                       
+            <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.dateInput}   
+             value= {  state3 }  onChangeText= { onState3Change }
+                placeholder="Date of Entry (dd-mm-yyyy)"
+                                     />
+            <TouchableOpacity  
+            onPress={ () => { showMode( 'date')}}
+            style={styles.to7 }>               
+            <MaterialCommunityIcons name="calendar-range" size={24} color="#000000" />
+            </TouchableOpacity>  
+                       </View>
   
              <View  style={styles.v5} > 
        
@@ -691,8 +943,8 @@ export default function Sales ( {   route , navigation  }) {
                <Text style={styles.t1} >Capture GPS</Text>   
               </TouchableOpacity>      
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip3}  
-                          value= {  state4 }  onChangeText= { onState4Change }
-                        placeholder="Captured Location"
+                           editable= { false}
+                           placeholder={ ( state4 )? location : "Location" }
                     />
               </View>   
   
@@ -746,14 +998,14 @@ export default function Sales ( {   route , navigation  }) {
              
                 
                 <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4} 
-                  value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5 ) } }
-                          placeholder="Quantity (in KGs)"
+                  value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5 ) } }  keyboardType="number-pad"
+                  placeholderTextColor='#ffffff8C'        placeholder="Quantity (in KGs)"
                       />  
     
                        
                     <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip4} 
-                     value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }
-                          placeholder="Rate/KG (INR)"
+                     value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }  keyboardType="number-pad"
+                     placeholderTextColor='#ffffff8C'      placeholder="Rate/KG (INR)"
                       />
                        
                     
@@ -761,8 +1013,8 @@ export default function Sales ( {   route , navigation  }) {
     
     
 
-                       <TextInput   autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4} 
-                          placeholder= { `Total Cost( INR )  = ${ state7}` }    editable= { false }
+                       <TextInput   autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4}   keyboardType="number-pad"
+                      placeholderTextColor='#ffffff8C'     placeholder= { `Total Cost( INR )  = ${ state7}` }    editable= { false }
                       />
     
     
@@ -796,6 +1048,12 @@ export default function Sales ( {   route , navigation  }) {
        
     }
     
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+
+
     const styles = StyleSheet.create({
       container: {
         flex: 1 , 
@@ -875,6 +1133,8 @@ export default function Sales ( {   route , navigation  }) {
       borderColor : "grey"  , 
       borderWidth : 1 , 
       borderRadius : 28 ,  
+      flexDirection : "row" , 
+      overflow: "hidden"
   
   
     }
@@ -899,7 +1159,7 @@ export default function Sales ( {   route , navigation  }) {
       flex : -1 ,
       width : "80%" ,
       height :  "10%" , 
-     
+      color : "#fff"  , 
       textAlign : "center"  , 
       borderColor : "#fff"  , 
       borderWidth : 1 , 
@@ -915,14 +1175,15 @@ export default function Sales ( {   route , navigation  }) {
     ip5 : {
   
       flex : -1 ,
-      width : "45%" ,
+      width : "48%" ,
       height :  "100%" , 
-    
+      color : "#fff"  , 
       textAlign : "center"  , 
       borderColor : "#fff"  , 
       borderWidth : 1 , 
       borderRadius : 28 ,  
       flexDirection : "row"  , 
+      overflow :"hidden"  , 
   
   
   
@@ -950,17 +1211,19 @@ export default function Sales ( {   route , navigation  }) {
      to1 : {
        
       flex : -1 ,   
-      width : "10%"  , 
-      height : "50%"  ,    
+      width :  windowWidth / 9  , 
+      height :  windowWidth / 9 ,    
       borderRadius : 50  , 
-      backgroundColor :  "black"  , 
+      backgroundColor :  "#547AA3"  , 
+      alignItems : "center"  , 
+      justifyContent : "center"  , 
   
      }  , 
   
       to2 : {
           
         flex : -1 ,   
-        width : "40%"  , 
+        width : "37%"  , 
         height : "100%"  ,  
         backgroundColor : "#78AFEA"    , 
         justifyContent  : "center"   , 
@@ -978,6 +1241,8 @@ export default function Sales ( {   route , navigation  }) {
         backgroundColor : "#fff"  , 
         borderRadius : 5 ,     
         alignItems  :  "center"  , 
+        justifyContent : "center"  ,
+        justifyContent : "center"  ,
   
       }   ,    
   
@@ -987,9 +1252,9 @@ export default function Sales ( {   route , navigation  }) {
         width : "50%"  , 
         height : "13%"  ,  
         backgroundColor : "#fff"  , 
-        borderRadius : 10 ,  
-        justifyContent: "center"  , 
+        borderRadius : 10 ,   
         alignItems : "center"  , 
+        justifyContent: 'center'
        }  , 
   
        to6 : {
@@ -1000,9 +1265,23 @@ export default function Sales ( {   route , navigation  }) {
         backgroundColor : "#3B4D61"  , 
         borderRadius : 5 ,     
         alignItems  :  "center"  , 
+        justifyContent : "center"  ,
   
+  
+       }  , 
+
+       to7 : {
+
+        flex : -1 ,   
+        width : "20%"  , 
+        height : "100%"  ,   
+        backgroundColor : "#fff"  ,  
+        alignItems  :  "center"  , 
+        justifyContent : "center" 
   
        }
+  
+  
   
     , 
   
@@ -1047,11 +1326,26 @@ export default function Sales ( {   route , navigation  }) {
   
   
       t1  :  {
-  
+        color : "#fff"  , 
+        fontWeight: '600' ,
+        fontStyle: 'normal'  , 
+         fontSize:12 , 
+        lineHeight: 22, 
+        letterSpacing: -0.408 ,
+        color : "#fff"
+        
         
   
   
-      }   ,    
+      }   ,     
+
+      dateInput : {
+
+        flex : -1 ,
+        width : "80%" ,
+        height :  "100%" ,   
+  
+      }  , 
   
   
       // dropdown style 
@@ -1078,7 +1372,15 @@ export default function Sales ( {   route , navigation  }) {
         fontWeight : "300" ,   
         textAlign : "center"
      
+      },  
+
+      placeholderStyle1: {
+        fontSize: 14,
+      color : "#ffffff8C"  , 
+        textAlign : "center"
+     
       },
+  
       selectedTextStyle: { 
          
   

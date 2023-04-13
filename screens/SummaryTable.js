@@ -2,7 +2,11 @@ import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity , Pressable   ,
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 
-export default function  SummaryTable( { navigation }) {
+export default function  SummaryTable( {   route  , navigation }) {
+  
+ // console.log( "summary")  ; 
+ // console.log(  route.params.token)  ; 
+   
   return (
 
     <View style={styles.container}>
@@ -16,7 +20,7 @@ export default function  SummaryTable( { navigation }) {
             
           <TouchableOpacity  style={styles.v2 }
             
-            onPress = {  ( ) => { navigation.navigate("Summary"   ,  { screentype :  "wastecollection" })}}
+            onPress = {  ( ) => { navigation.navigate("Summary"   ,  {  token : route.params.token ,  screentype :  "wastecollection" })}}
           >
     
             <Text>See detailed summary table </Text>
@@ -34,7 +38,7 @@ export default function  SummaryTable( { navigation }) {
             
     
           <TouchableOpacity style={styles.v2 } 
-            onPress = {  ( ) => { navigation.navigate("Summary"   ,  { screentype :  "segproc" })}}
+            onPress = {  ( ) => { navigation.navigate("Summary"   ,  {  token : route.params.token , screentype :  "segproc" })}}
           >
         
          <Text> See detailed summary table  </Text>
@@ -52,7 +56,7 @@ export default function  SummaryTable( { navigation }) {
           </View>
         
           <TouchableOpacity style={styles.v2 } 
-             onPress = {  ( ) => { navigation.navigate("Summary"  ,  { screentype :  "sales" } )}}
+             onPress = {  ( ) => { navigation.navigate("Summary"  ,  {  token : route.params.token , screentype :  "sales" } )}}
            >
             <Text>  See detailed summary table  </Text>
     

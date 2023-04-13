@@ -1,4 +1,5 @@
 
+
 console.log("Welcome to Programiz!");
 
  
@@ -21,5 +22,332 @@ dates.forEach(
  
 
  
+
+
+
+import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity  , SafeAreaView ,  Dimensions     , StatusBar  , Platform  , KeyboardAvoidingView   , ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import Icon from 'react-native-vector-icons/FontAwesome';   
+import * as Location from "expo-location";  
+import { Dropdown } from 'react-native-element-dropdown';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Autocomplete from 'react-native-autocomplete-input';
+
+
+/* 
+
+export default function PlasticProcessing ( {   route , navigation  }) {
+     
+    const [location, setLocation] = React.useState(null);
+    const [errorMsg, setErrorMsg] = React.useState(null);
+     
+
+    // date time picker 
+
+    
+    let  date1 = new Date() ;
+    console.log( date1) ; 
+    date1.setDate(date1.getDate() - 7);
+
+    let finalDate =  date1.getFullYear()+ ','+ (date1.getMonth()+1)  + ',' + date1.getDate();
+    
+   
+   
+    
+    const [   mindate  ,  setMinDate  ] = React.useState(  date1 ) ;
+  
+
+  
+    console.log( mindate.getFullYear() ) ; 
+
+
+    
+    const [ date, setDate ] = React.useState(  new Date()) ;
+    const [  mode , setMode ] = React.useState( "date") ;
+    const [ show , setShow  ] = React.useState(  false) ;
+    const [  text1 , setText1  ] = React.useState( "Empty") ;
+   
+
+
+  
+
+    const onChange = (  event , selectedDate)  => {
+         
+      const currentDate = selectedDate ||  date ; 
+      
+      setShow(  Platform.OS === "ios") ; 
+      setDate( currentDate) ; 
+
+      let tempDate = new Date( currentDate) ;
+      let fDate = tempDate.getDate() + "-"  + (tempDate.getMonth()+1 )  + "-" +  tempDate.getFullYear() ; 
+      setText1( fDate) ; 
+      console.log( fDate) ; 
+ 
+
+    }  
+
+
+    const showMode = (  currentMode  ) => {
+
+             setShow( true ) ;
+             setMode(  currentMode) ; 
+      }
+
+  
+
+
+    React.useEffect(() => {
+      (async () => {
+        
+        let { status } = await Location.requestForegroundPermissionsAsync(); 
+        
+        console.log( status)  ; 
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+           console.log("fghfhfh") ;
+        let location = await Location.getCurrentPositionAsync({});
+        console.log("fghfhfh") ;
+         console.log(location ) ;
+        setLocation(location);
+      })();
+    }, []);
+   
+
+    let text = 'Waiting..';
+    if (errorMsg) {
+      text = errorMsg;
+    } else if (location) {
+      text = JSON.stringify(location);
+    }
+  
+    return ( 
+      <View style={styles.container}>
+      <View style={styles.v1}>
+        <Text >{text}</Text>
+      </View>
+
+<View style={styles.v1}>
+  
+  <Text>
+    { text1}
+  </Text> 
+  <View style={  {backgroundColor : "grey"} }  >
+     <Button title="datepicker"  onPress={() => { showMode( 'date')}} />
+  </View>
+
+  {
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
+
+  }
+</View>
+
+<View>
+
+  <Text>sjhqjsqhjsqjhs</Text>
+
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+  
+  <Text>sjhqjsqhjsqjhs</Text>
+
+</View>
+  
+</View>
+    );
+  
+  
+   
+     
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1 , 
+      backgroundColor : '#78AFEA'  , 
+       alignItems : "center"  , 
+       justifyContent : "center"  , 
+        
+
+    },
+      
+
+    v1 : {
+
+
+       backgroundColor : "red"
+
+    }
+  });
+   */
+
+
+
+  
+export default function PlasticProcessing ( {   route , navigation  }) {
+  
+ const [    Value, setValue ] = React.useState([""]) ; 
+
+ const [ suggestions , setSuggestions ] =  React.useState([""]) ;  
+
+ 
+
+ 
+
+  const  handler1  = () => {    // for registering the data   ( other waste ) (  iwc )
+   
+  
+  
+  
+    const pushdata =  async () => {  
+  
+      try {
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        {    
+          method: 'POST', 
+     
+            headers: {
+              'Accept': 'application/json',
+              'Content-type': 'application/json'  ,  
+              'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjQyMTI0MmYyMGVjZWI1MDhjNDdlYjJiIiwiZXhwIjoxNjgwNjg0ODM2fQ.lTKqS_zCzPy1wdsmsO4fuzBNrF2zB76wXyhRV2uBNVg" , 
+          
+          }
+      , 
+      body: JSON.stringify({
+
+        "stage_of_processing" : ""
+     }),
+     }
+       );  
+  
+        const json = await response.json(); 
+     
+          console.log(json); 
+          setSuggestions( json.data) ; 
+         
+     /*  */
+      } catch (error) {
+        console.error(error);
+      }  
+     };
+  
+  
+    pushdata()  ; 
+  
+   } ; 
+  
+  return (
+    <SafeAreaView style={styles.saveView}>
+    <View style={styles.container}>
+      <View style={styles.autocompleteContainer}>
+        <Autocomplete
+         
+          autoCorrect={false}
+          data={ Value }
+     
+           onFocus={( ) => { handler1() } }
+          placeholder= ""
+          flatListProps={{
+            data : suggestions , 
+            keyboardShouldPersistTaps: 'always',
+            keyExtractor: ( item ) => item.ID ,
+            renderItem: ({ item }) => (
+              <TouchableOpacity onPress={() =>  alert("bjBJzhBJ")}>
+                <Text style={styles.itemText}>{item.TITLE}</Text>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+      </View>
+
+   
+    </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  saveView: {
+    flex: 1,
+  },
+  container: {
+    position: 'relative',
+    backgroundColor: '#F5FCFF',
+    flex: 1,
+
+    // Android requiers padding to avoid overlapping
+    // with content and autocomplete
+    paddingTop: 50,
+
+    // Make space for the default top bar
+    ...Platform.select({
+      android: {
+        marginTop: 25,
+      },
+      default: {
+        marginTop: 0,
+      },
+    }),
+  },
+  itemText: {
+    fontSize: 15,
+    margin: 2,
+  },
+  descriptionContainer: {
+    // `backgroundColor` needs to be set otherwise the
+    // autocomplete input will disappear on text input.
+    backgroundColor: '#F5FCFF',
+    marginTop: 8,
+  },
+  infoText: {
+    textAlign: 'center',
+  },
+  autocompleteContainer: {
+    // Hack required to make the autocomplete
+    // work on Andrdoid
+    flex: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1,
+    padding: 5,
+  },
+});
+
 
 

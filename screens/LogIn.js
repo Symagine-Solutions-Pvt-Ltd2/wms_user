@@ -1,15 +1,17 @@
-import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity  , StatusBar } from 'react-native';
+import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity  , StatusBar  , Dimensions  , Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome'; 
+
+import Arrow from '../assets/Arrow.png'  ; 
 
 export default function LogIn(   { navigation  }) {
 
   const [ login  , onChangeLogin ] = React.useState( true );
 
     
-  const [ visible  ,   onChangeVisibility ] = React.useState( true ); 
+  
 
 
   
@@ -21,7 +23,10 @@ export default function LogIn(   { navigation  }) {
    // login 
   const [ Password2 , onChangePassword2 ] = React.useState("");     // password   
   const [  email1, onChangeEmail1 ] = React.useState("");  // email 
-  
+  const [ visible1  ,   onChangeVisibility1 ] = React.useState( true );   
+  const [ icon1 , onChangeIcon1] = React.useState( 'eye-slash');  
+  const [ visible2  ,   onChangeVisibility2 ] = React.useState( true );   
+  const [ icon2 , onChangeIcon2] = React.useState( 'eye-slash');  
 
  // signup
   const [ name , onChangeName ] = React.useState("");     // password   
@@ -29,8 +34,9 @@ export default function LogIn(   { navigation  }) {
   const [ password , onChangePassword ] = React.useState("");     // password   
   const [ password1 , onChangePassword1  ] = React.useState("");     // set password  
   const [ organization  , onChangeOrganization   ] = React.useState("");     //  organization 
- 
-   
+  const [ icon , onChangeIcon] = React.useState( 'eye-slash');
+  const [ visible  ,   onChangeVisibility ] = React.useState( true );  
+  
 
   console.log(name ) ; 
   console.log(  email ) ; 
@@ -40,7 +46,7 @@ export default function LogIn(   { navigation  }) {
  
 
 
-  const [ icon , onChangeIcon] = React.useState( 'eye-slash');
+
 
    const handlePasswordVisibility   = ()  => {
             
@@ -55,7 +61,48 @@ export default function LogIn(   { navigation  }) {
       onChangeVisibility( true ) ; 
     }
         
+   }  ;  
+
+
+ 
+  
+   const handlePasswordVisibility1   = ()  => {
+            
+    if(  icon1 == 'eye-slash') {
+     
+      onChangeIcon1('eye')  ; 
+      onChangeVisibility1( false) ; 
+
+    }else if(    icon1 == 'eye') {
+
+      onChangeIcon1('eye-slash')  ; 
+      onChangeVisibility1( true ) ; 
+    }
+        
    }  ; 
+  
+  
+
+
+   const handlePasswordVisibility2   = ()  => {
+            
+    if(  icon2 == 'eye-slash') {
+     
+      onChangeIcon2('eye')  ; 
+      onChangeVisibility2( false) ; 
+
+    }else if(    icon2 == 'eye') { 
+
+      onChangeIcon2('eye-slash')  ; 
+      onChangeVisibility2( true ) ; 
+    }
+        
+   }  ; 
+  
+
+
+
+
   
    const handler1   = ()  => {
                
@@ -76,7 +123,7 @@ export default function LogIn(   { navigation  }) {
     const pushdata =  async () => {  
 
    try {
-     const response = await fetch( 'http://10.0.2.2:8000/user/registeruser'  , 
+     const response = await fetch( 'http://clean-sundarbans.com:5000/user/registeruser'  , 
      {   method: 'POST', 
 
          headers: {
@@ -99,14 +146,22 @@ export default function LogIn(   { navigation  }) {
      const json = await response.json();
        console.log(json.message);     
 
-       if( json.message  === "Registered Successfully.") {
+       if( json.status  === "success") {
                
-          
+        alert(  json.message)  ;  
         console.log( "vbvhv")  ; 
-         onChangeLogin(  true)  ; 
+         onChangeLogin(  true)  ;
+         onChangeName("") ;
+         onChangeEmail("") ;
+         onChangeOrganization("") ; 
+         onChangePassword("") ;
+         onChangePassword1("") ; 
+         
 
        } else {
            
+
+        alert(  json.message)  ; 
          console.log(   json.message )  ;  
 
        }
@@ -133,7 +188,7 @@ const submit2  = ()  => {
   const pushdata =  async () => {  
 
  try {
-   const response = await fetch( 'http://10.0.2.2:8000/user/loginuser'  , 
+   const response = await fetch( 'http://clean-sundarbans.com:5000/user/loginuser'  , 
    {   
     
     method: 'POST', 
@@ -158,16 +213,19 @@ const submit2  = ()  => {
 
      console.log(json);     
 
-     if( json.message  === "Login successful") {
+     if( json.status  === "success") {
        
-     // console.log(json.data.token );  
+      alert(  json.message)  ;  
       navigation.navigate("Home" ,   { token  : json.data.token  } );
      // console.log( "vbvhv")  ; 
-
-       
+          
+        onChangeEmail1("") ;
+        onChangePassword2("") ; 
 
      } else {
          
+
+      alert(  json.message)  ; 
        console.log(   json.message )  ;  
 
      }
@@ -205,33 +263,41 @@ console.log("bhjgnagxaxh")  ;
         style={styles.v1_background}
       >
 
+{
+ ( login) ? 
 
+<Text style={styles.text1 }>Welcome Back!</Text>
+  : 
+  <Text  style={styles.text1 }>Hello User!</Text>
+}
 </LinearGradient>
 
 </View>  
 
 <View style={styles.v2}  >
-
-<Text></Text>
+ 
 
 </View>  
 
   <View style={styles.v3} >
 
+    < View style={ styles.v7 }>
+
   <TouchableOpacity  style={  login ? styles.to2 :  styles.to1}   
       onPress = {  ()  =>  { handler1() }}
   >
 
-    <Text    > login </Text>
+    <Text  style={   login ? styles.text3 :  styles.text2}   > Log In </Text>
     </TouchableOpacity>
    
     
-    <TouchableOpacity  style={  login ? styles.to1 :  styles.to2 }
+    <TouchableOpacity  style={  login ? styles.to1 :  styles.to2}
           onPress = {   ()  =>  { handler2() }}
          >
-    <Text >  Signup </Text>
+    <Text  style={  login ? styles.text2 :  styles.text3}   >  Sign Up </Text>
     </TouchableOpacity>
-  
+   
+    </View>
   </View> 
     
    {( login )
@@ -247,7 +313,7 @@ console.log("bhjgnagxaxh")  ;
          
           
          <View   style={styles.v6} > 
-        <Icon  name="user" size={27} /> 
+        <Icon  name="user" size={27}  color={"grey"} /> 
          </View>
        </View>
    
@@ -255,33 +321,35 @@ console.log("bhjgnagxaxh")  ;
 
        <View style={styles.ip2}   >
    <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6} 
-            placeholder="Password"  value= { Password2  }   onChangeText = {  onChangePassword2}/>     
+      secureTextEntry={ visible}       placeholder="Password"  value= { Password2  }   onChangeText = {  onChangePassword2}/>     
 
-     <View   style={styles.v6} > 
-        <Icon  name="eye-slash" size={27} /> 
-         </View>
+     <TouchableOpacity  style={styles.v6}
+     onPress={ () => { handlePasswordVisibility()}} > 
+        <Icon  name= {icon } size={27}   color={"grey"} /> 
+         </TouchableOpacity>
        </View>
 
 
-<View style={styles.ip7} > 
-  <Icon     name="check"  style={{ borderWidth : 4  , padding : 5 ,  }}      size={22} /> 
+  <View style={styles.ip7} > 
+  {/*  <Icon     name="check"  style={{ borderWidth : 4  , padding : 5 ,  }}      size={22} /> 
   <TouchableOpacity
-      onPress = {  ( ) => { navigation.navigate("PlasticProcessing")}}
   >
 <Text> Remember me</Text>      
-</TouchableOpacity>
-<TouchableOpacity  
-   onPress = {  ( ) => { navigation.navigate("SummaryTable")}}>
+</TouchableOpacity> */}
+ 
+
+{/* <TouchableOpacity   
+   onPress={ () => {    navigation.navigate("PlasticProcessing" ) }}
+ >
 <Text>Forgot Password?</Text>
 </TouchableOpacity>
-    
-  </View >
+     */}
+  </View >  
     
   <TouchableOpacity  
        style={styles.to4} 
       onPress = {  submit2 } >
-
-    <Text> login</Text>
+  <Icon  name="arrow-right" size={27} color = "#fff" /> 
   </TouchableOpacity>
 </View>
 
@@ -296,7 +364,7 @@ console.log("bhjgnagxaxh")  ;
             placeholder="Name"  value= {   name }   onChangeText = {onChangeName }/>    
         
         <View   style={styles.v6}  > 
-        <Icon  name="user" size={27} /> 
+        <Icon  name="user" size={27} color={"grey"} /> 
          </View>
     
      </View> 
@@ -307,11 +375,11 @@ console.log("bhjgnagxaxh")  ;
 <View   style={styles.ip2}  >  
 
 <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6}  
-                   placeholder="Email Address"   value= { email }   onChangeText = {  onChangeEmail } />
+                   placeholder="Email Address"   value= { email }   onChangeText = {  onChangeEmail }   />
   
  
   <View    style={styles.v6}  > 
-  <Icon  name="envelope" size={27} /> 
+  <Icon  name="envelope" size={27}   color={"grey"} /> 
   </View>
     
   </View>  
@@ -322,11 +390,13 @@ console.log("bhjgnagxaxh")  ;
 <View   style={styles.ip3} >   
 
 <TextInput  autoCapitalize='none'   autoCorrect={ false}   style={styles.ip6} 
-         placeholder="Password"  value= { password }  onChangeText = {  onChangePassword} />        
+     secureTextEntry= {visible1 }    placeholder="Password"  value= { password }  onChangeText = {  onChangePassword} />        
 
-<View   style={styles.v6}  > 
-  <Icon  name="eye-slash" size={27} /> 
-  </View>
+<TouchableOpacity style={styles.v6} 
+  onPress={ () => { handlePasswordVisibility1()}}
+> 
+  <Icon  name= { icon1 } size={27}  color={"grey"} /> 
+  </TouchableOpacity>
     
 </View>    
 
@@ -336,12 +406,14 @@ console.log("bhjgnagxaxh")  ;
 
 <View  style={styles.ip4}  >   
 <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip6} 
-         placeholder="Re-enter  Password"  value= { password1  }  onChangeText = {  onChangePassword1 }/>    
+      secureTextEntry= {visible2}    placeholder="Re-enter  Password"  value= { password1  }  onChangeText = {  onChangePassword1 }/>    
 
-<View   style={styles.v6}  >  
+<TouchableOpacity    style={styles.v6} 
+  onPress={ ()=> { handlePasswordVisibility2()}}
+>  
 
-  <Icon  name="eye-slash" size={27} /> 
-  </View>
+  <Icon  name={icon2} size={27}   color={"grey"} /> 
+  </TouchableOpacity>
 </View>   
   
 
@@ -353,7 +425,7 @@ console.log("bhjgnagxaxh")  ;
          placeholder="Organisation Name"  value= { organization }   onChangeText = {  onChangeOrganization }  />      
 <View  style={styles.v6}  >  
 
-<Icon  name="building" size={27} /> 
+<Icon  name="building" size={27}   color={"grey"} /> 
 </View>
 </View>
 
@@ -362,7 +434,7 @@ console.log("bhjgnagxaxh")  ;
    <TouchableOpacity style={styles.to4} 
       onPress = {  submit1 }
  >
-     <Text>Sign Up</Text>
+        <Icon  name="arrow-right" size={27} color = "#fff" /> 
    </TouchableOpacity>  
 
 
@@ -375,6 +447,12 @@ console.log("bhjgnagxaxh")  ;
       
     );
   }
+
+
+  
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
   
   const styles = StyleSheet.create({
     container: {
@@ -400,6 +478,7 @@ console.log("bhjgnagxaxh")  ;
         flex : -1  , 
          width : "100%"  , 
          height : "100%"  , 
+         alignItems : "center"  , 
 
       }
     , 
@@ -426,10 +505,11 @@ console.log("bhjgnagxaxh")  ;
          zIndex :  5 , 
          shadowColor : "#00000"  ,
          shadowRadius : 2 , 
-         elevation  : 6 ,
-         justifyContent : "flex-start"   , 
-         flexDirection : "row"  , 
-         alignItems: "center" , 
+         borderTopLeftRadius : 10 , 
+         borderTopRightRadius : 10 , 
+         overflow : "hidden" , 
+         alignItems : "center" , 
+         justifyContent : "center"  , 
 
       }
    , 
@@ -446,6 +526,8 @@ console.log("bhjgnagxaxh")  ;
     zIndex :  5 ,
      
     alignItems : "center"  , 
+    borderBottomRightRadius : 10, 
+    borderBottomLeftRadius : 10 ,
      
    }   , 
 
@@ -464,6 +546,7 @@ console.log("bhjgnagxaxh")  ;
      borderRadius : 10 , 
      borderColor : "grey" , 
      borderWidth : 2 , 
+      overflow : "hidden" ,
 
     }  , 
 
@@ -485,6 +568,7 @@ console.log("bhjgnagxaxh")  ;
      borderRadius : 10 , 
      borderColor : "grey" , 
      borderWidth : 2 , 
+     overflow : "hidden" ,
    }  ,  
 
 
@@ -504,6 +588,7 @@ console.log("bhjgnagxaxh")  ;
      borderRadius : 10 , 
      borderColor : "grey" , 
      borderWidth : 2 , 
+     overflow : "hidden" ,
 
   }  , 
   
@@ -526,7 +611,7 @@ console.log("bhjgnagxaxh")  ;
      borderRadius : 10 , 
      borderColor : "grey" , 
      borderWidth : 2 , 
-
+     overflow : "hidden" ,
   }  , 
   
 
@@ -548,17 +633,20 @@ console.log("bhjgnagxaxh")  ;
       borderColor : "grey" , 
       borderWidth : 2 , 
 
+      overflow : "hidden" ,
+
     }  , 
     
 
      ip6 : {
 
       height : "100%"  , 
-      width : "90%"  , 
+      width : "85%"  , 
       backgroundColor : "#fff" , 
       textAlignVertical : "center" , 
-      padding : 0 , 
+      padding  : 0 , 
       paddingLeft : 5 , 
+    
 
 
 
@@ -592,13 +680,15 @@ console.log("bhjgnagxaxh")  ;
      elevation : 2, 
     zIndex :  5 , 
     alignItems : "center"  , 
+     borderBottomRightRadius : 10, 
+     borderBottomLeftRadius : 10 ,
 
    }   , 
   
     v6 : {
 
       height : "100%"  , 
-      width : "10%"  , 
+      width : "15%"  , 
       backgroundColor : "#fff" , 
       padding : 0 , 
       paddingLeft : 5 , 
@@ -608,21 +698,41 @@ console.log("bhjgnagxaxh")  ;
 
 
 
-    }
+    }   , 
+
+
+     v7 : {
+      
+      width : "95%"  , 
+      height : "100%"  ,
+      justifyContent : "flex-start"   , 
+      flexDirection : "row"  , 
+      alignItems: "center" , 
+      backgroundColor: "#fff"
+
+
+
+
+     }
     , 
    to2 : {
          
       
       borderBottomWidth : 5 ,  
-       borderColor : "#333D79"  , 
-       height : "50%"  ,
+      margin : 5 , 
+       borderColor : "#547AA3"  , 
+       backgroundColor : "#fff"  , 
+  
         
    }
    ,  
    
    to1 : {
-       
-    height : "50%"  ,
+  
+    borderBottomWidth : 5 ,
+    margin : 5 , 
+    borderColor : "#fff"  , 
+    backgroundColor : "#fff"
 
    }
    ,    
@@ -631,23 +741,69 @@ console.log("bhjgnagxaxh")  ;
    to4 : {
         
        
-    height :  "15%"   , 
-    width :  "40%"  ,   
+    height : windowWidth / 5 ,
+    width :  windowWidth / 5 , 
     position : "absolute"  , 
-    top : "93%"  , 
-    zIndex : 10 , 
+    top : "88%"  , 
+    zIndex : 8 , 
     textAlign : "center"  , 
      borderWidth :  1 , 
-     backgroundColor : "#333D79" ,
-     flexDirection : "row",  
-     borderRadius : 10 ,
-     borderWidth : 5 , 
-     borderColor : "#fff"
+     backgroundColor : "#547AA3" ,
+     alignItems : "center" , 
+     justifyContent : "center" , 
+     borderRadius : windowWidth / 5  , 
+     borderWidth : 10 , 
+     borderColor : "#fff"  , 
+     elevation : 4, 
+     overflow : "hidden"  ,
+  
      
 
    }
    ,    
+     
+   text1 : {
+  
+
+   width : "90%"  , 
+   fontWeight: '600' ,
+   fontStyle: 'normal'  , 
+    fontSize:24 , 
+   lineHeight: 26, 
+   letterSpacing: -0.408 ,
+   color : "#fff"
+
+
+   }   
+
+   , 
    
+   text2 :{
+  
+ 
+   fontWeight: '500' ,
+   fontStyle: 'normal'  , 
+    fontSize:16 , 
+   lineHeight: 22, 
+   letterSpacing: -0.408 ,
+    color : "black" , 
+  
+
+   }  , 
+
+
+   text3 :{
+  
+ 
+    fontWeight: '500' ,
+    fontStyle: 'normal'  , 
+     fontSize:16 , 
+    lineHeight: 26, 
+    letterSpacing: -0.408 ,
+     color : "#547AA3"  ,
+    padding : 4 , 
+ 
+    }
 
      
   });

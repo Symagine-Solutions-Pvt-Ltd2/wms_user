@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity    , StatusBar } from 'react-native';
+import { StyleSheet, Text, View  , TextInput ,  TouchableOpacity   , Dimensions  , StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; 
 import React from "react";
 import Icon from 'react-native-vector-icons/FontAwesome';   
 import * as Location from "expo-location";  
 import { Dropdown } from 'react-native-element-dropdown';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 
 export default function WasteCollection ( {   route , navigation  }) {  
@@ -30,14 +33,14 @@ export default function WasteCollection ( {   route , navigation  }) {
   const [isFocus1, setIsFocus1] = React.useState(false);    // plastic 
   const [isFocus2, setIsFocus2] = React.useState(false);    //  waste  
 
-  const [ code  , onErrorchange ] = React.useState (false );  // 
+  const [ code  , onErrorchange ] = React.useState (false );  //  date 
   const [  designchange   , onDesignchange ] = React.useState (  true  );  //  toogle between  plastic waste and other waste (  subdivision;s state change  of every scrren ) 
 
   const [ state1  , onState1Change  ] = React.useState ( "" );   // willbe changed to name later   
   
   const [ state2  , onState2Change   ] = React.useState ( "Code of Waste Management Unit" );  
   const [ state3  , onState3Change  ] = React.useState ( "" );     
-  const [   state4  , onState4Change   ] = React.useState ( "Location" );    // gps location 
+  const [   state4  , onState4Change   ] = React.useState ( false );    // gps location 
   const [ state5  , onState5Change  ] = React.useState (  0  );      // state 5, 6 will be used to multiply . 
   const [   state6  , onState6Change   ] = React.useState (  0  ); 
    const [ state7 , onState7Change  ] = React.useState (  0  );   
@@ -54,6 +57,76 @@ export default function WasteCollection ( {   route , navigation  }) {
   const [   state12  , onState12Change   ] = React.useState ( "" ); 
   const [   state13  , onState13Change   ] = React.useState ( "" ); 
 
+  
+ 
+  // stages of  plastic  
+
+  
+  const [isFocus3, setIsFocus3] = React.useState(false);    // plastic 
+  const [value4, setValue4] = React.useState( "");
+  const [value5 , setValue5] = React.useState( "Processing stage");
+  const [ ProcessingStage , setProcessingStage ] =  React.useState( []); 
+
+
+  
+  const  handler5  = () => {   
+  
+    const pushdata =  async () => {  
+  
+      try {
+        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        {    
+          method: 'POST', 
+     
+            headers: {
+              'Accept': 'application/json',
+              'Content-type': 'application/json'  ,  
+              'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjQyMTI0MmYyMGVjZWI1MDhjNDdlYjJiIiwiZXhwIjoxNjgwNjg0ODM2fQ.lTKqS_zCzPy1wdsmsO4fuzBNrF2zB76wXyhRV2uBNVg" , 
+          
+          }
+      , 
+      body: JSON.stringify({
+
+        "stage_of_processing" : value4
+     }),
+     }
+       );  
+  
+        const json = await response.json(); 
+     
+          console.log(json); 
+          setProcessingStage( json.data) ; 
+
+      } catch (error) {
+        console.error(error);
+      }  
+     };
+  
+    setIsFocus3(true);
+    pushdata()  ; 
+    
+    }
+
+
+    const  handler6  = (   title ) => {     
+      
+
+      if(  value5 === "Processing stage"  ){
+       
+        setValue5(  title ) ; 
+        setProcessingStage([]) ;
+      }else{
+           
+        let  newTitle =  value5 + ","+ title ; 
+        setValue5(  newTitle ) ; 
+        setProcessingStage([]); 
+      }
+   
+    }
+
+
+ 
+
 
    
   const dropdowndata1 = [ 
@@ -63,7 +136,7 @@ export default function WasteCollection ( {   route , navigation  }) {
     { label: 'PVC', value: '3' },
     { label: 'LDPE', value: '4' }, 
     { label: 'PP', value: '5' },
-    { label: 'ps', value: '6' },
+    { label: 'PS', value: '6' },
     { label: 'MLP', value: '7' }, 
 
   ];  
@@ -84,19 +157,87 @@ export default function WasteCollection ( {   route , navigation  }) {
 
   ];  
      
+  
 
+  const dropdowndata3 = [ 
+
+    // types  of waste 
+
+    { label: 'Plastic Waste', value: '1' },     
+    { label: 'Other Waste', value: '2' },
+    { label: 'Both', value: '3' }, 
+
+  ];  
    
   
 
 
-  const screentype  =   route.params.screentype   ; 
+  const screentype  =   route.params.screentype   ;   
+
+
+
+  
+ //   coding to set the date 
+  // state3  is used to set date 
+  
+
+  let  date1 = new Date() ;
+  console.log( date1) ; 
+  date1.setDate(date1.getDate() - 7);
+
+  let finalDate =  date1.getFullYear()+ ','+ (date1.getMonth()+1)  + ',' + date1.getDate();
+  
+ 
+ 
+  
+  const [   mindate  ,  setMinDate  ] = React.useState(  date1 ) ;
+
+
+
+  console.log( mindate.getFullYear() ) ; 
+
+
+
+
+  const [ date, setDate ] = React.useState(  new Date()) ;
+  const [  mode , setMode ] = React.useState( "date") ;
+  const [ show , setShow  ] = React.useState(  false) ;
+  
+  const onChange = (  event , selectedDate)  => {
+         
+    const currentDate = selectedDate ||  date ; 
+    
+    setShow(  Platform.OS === "ios") ; 
+    setDate( currentDate) ; 
+
+    let tempDate = new Date( currentDate) ;
+    let fDate = tempDate.getDate() + "-"  + (tempDate.getMonth()+1 )  + "-" +  tempDate.getFullYear() ; 
+     onState3Change( fDate) ; 
+    console.log( fDate) ; 
+
+
+  }  
+
+  const showMode = (  currentMode  ) => {
+
+    setShow( true ) ;
+    setMode(  currentMode) ; 
+}
+
+
+
+
+
+
+
+
       
   const submitseg  = () => {      // seggregation 1
 
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/wsegregator'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/wsegregator'  , 
       {    
         method: 'POST', 
    
@@ -159,7 +300,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/primarysegregation'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/primarysegregation'  , 
       {    
         method: 'POST', 
    
@@ -175,11 +316,11 @@ export default function WasteCollection ( {   route , navigation  }) {
       "uw_code":  state8,
     "uw_name": state1, 
     "wmu_code": state2 , 
-    "capture_gps": state4,
+    "capture_gps":  location ,
     "date_of_entry":  state3,
-    "segregated_waste_quantity":  state5 ,
-    "working_hours": state6,
-    "amount_paid": state10 
+    "quantity": `${state5}` ,
+    "working_hours":`${state6}`  ,
+    "amount_paid": `${state10}`
    
    }),
    }
@@ -187,8 +328,25 @@ export default function WasteCollection ( {   route , navigation  }) {
       const json = await response.json(); 
    
         console.log(json);     
+         
+        if(   json.message ===  "submitted Successfully." ) {
+          
+          alert(  json.message );
+          onState8Change("") ;
+          onState1Change("") ;
+          onState4Change(  false  ) ;
+          onState2Change("Code of Waste Management Unit") ;
+          onState3Change("") ;
+          onState6Change("") ;
+          onState5Change("") ; 
+          onState10Change("") ; 
 
-        alert( "Information submitted Successfully !");
+
+        }else{
+
+          alert(  json.message );
+        }
+       
         
     } catch (error) {
       console.error(error);
@@ -219,7 +377,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/secondarysegregation'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/secondarysegregation'  , 
       {    
         method: 'POST', 
    
@@ -235,11 +393,11 @@ export default function WasteCollection ( {   route , navigation  }) {
       "uw_code":  state8,
     "uw_name": state1, 
     "wmu_code": state2 , 
-    "capture_gps": state4,
+    "capture_gps": location ,
     "date_of_entry":  state3,
-    "segregated_waste_quantity":  state5 ,
-    "working_hours": state6,
-    "amount_paid": state10 
+    "quantity":  `${state5}`  ,
+    "working_hours": `${state6}` ,
+    "amount_paid": `${state10}` 
    
    }),
    }
@@ -247,8 +405,25 @@ export default function WasteCollection ( {   route , navigation  }) {
       const json = await response.json(); 
    
         console.log(json);    
-        alert( "Information submitted Successfully !"); 
-        
+
+        if(   json.message ===  "submitted Successfully." ) {
+          
+          alert(  json.message );
+          onState8Change("") ;
+          onState1Change("") ;
+          onState4Change(  false  ) ;
+          onState2Change("Code of Waste Management Unit") ;
+          onState3Change("") ;
+          onState6Change("") ;
+          onState5Change("") ; 
+          onState10Change("") ; 
+
+
+        }else{
+
+          alert(  json.message );
+        }
+       
     } catch (error) {
       console.error(error);
     }  
@@ -268,7 +443,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/wmuview'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/wmuview'  , 
       {    
         method: 'POST', 
    
@@ -348,7 +523,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/processing'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/processing'  , 
       {    
         method: 'POST', 
    
@@ -363,14 +538,13 @@ export default function WasteCollection ( {   route , navigation  }) {
        
       
    "wmu_code":  state8 ,
-   "capture_gps": state4 ,
+   "capture_gps": location ,
      "date_of_entry":  state3,
-     "quantity": state5,
-        "working_hours": "70"  ,
-         "amount_paid": state10 ,
+     "quantity": `${state5}`,
+      "amount_paid":`${state10}` ,
      "type_of_plastic": dropdownValue1 ,
-"stage_of_processing":state11   ,
-"workers_involved": state6
+"stage_of_processing":  value5  ,
+"workers_involved": `${state6}`
 
    
    }),
@@ -380,7 +554,28 @@ export default function WasteCollection ( {   route , navigation  }) {
       const json = await response.json(); 
    
         console.log(json);     
-        alert( "Information submitted Successfully !"); 
+       
+         
+        if(   json.message ===  "submitted Successfully." ) {
+          
+          alert(  json.message );
+          onState8Change("") ;
+          onState1Change("") ; 
+          onState4Change(  false ) ;
+          onState3Change("") ;
+          onState5Change("") ; 
+          onState6Change("") ; 
+          onState10Change("") ; 
+          setValue5("Processing stage") ; 
+          setValue4("")  ; 
+          setValue1("") ;
+
+
+        }else{
+
+          alert(  json.message );
+        }
+
    /*  */
     } catch (error) {
       console.error(error);
@@ -407,14 +602,14 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/transportation'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/transportation'  , 
       {    
         method: 'POST', 
    
           headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'  ,  
-            'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc4OTQ2MjAxfQ._4eLOEn2-qlo3UGq44RMMjxn0X6Zfl2UEAkvjokH5UM'
+            'token' :  token , 
         
         }
     , 
@@ -490,14 +685,14 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://10.0.2.2:8000/user/transportationentry'  , 
+      const response = await fetch( 'http://clean-sundarbans.com:5000/user/transportationentry'  , 
       {    
         method: 'POST', 
    
           headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'  ,  
-            'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc4OTQ2MjAxfQ._4eLOEn2-qlo3UGq44RMMjxn0X6Zfl2UEAkvjokH5UM'
+            'token' :  token 
         
         }
     , 
@@ -506,15 +701,15 @@ export default function WasteCollection ( {   route , navigation  }) {
      
       "wmu_name" :  state1 ,
       "wmu_code" : state8 ,
-     "capture_gps" : state4 , 
+     "capture_gps" : location, 
       "date_of_entry" : state3  , 
        "from":   state11 ,  
        "type_of_waste" : dropdownValue1  , 
       "to" : state12 , 
-      "transport_quantity" : state10 , 
-      "number_of_vehicle" : state5 , 
-      "cost_per_unit" :  state6 , 
-       "total_cost" :  state7
+      "quantity" : `${state10}`, 
+      "number_of_vehicle" :`${state5}` , 
+      "cost_per_unit" : `${state6}`, 
+       "total_cost" :  `${state7}`
 
 
     
@@ -528,7 +723,29 @@ export default function WasteCollection ( {   route , navigation  }) {
    
         console.log(json);   
         
-            alert( "Information submitted Successfully !"); 
+          
+        if(   json.message ===  "submitted Successfully." ) {
+          
+          alert(  json.message );
+          onState8Change("") ;
+          onState1Change("") ; 
+          onState4Change(  false ) ;
+          onState3Change("") ;
+          onState5Change( 0 ) ; 
+          onState6Change( 0) ; 
+          onState7Change( 0 ) ; 
+          onState10Change("") ; 
+          onState11Change("") ; 
+          onState12Change("") ;
+          setValue1("") ;
+
+
+        }else{
+
+          alert(  json.message );
+        }
+
+
    /*  */
     } catch (error) {
       console.error(error);
@@ -616,7 +833,7 @@ React.useEffect(() => {   // setting gps location
     let location = await Location.getCurrentPositionAsync({});
     console.log( location.coords.longitude) ; 
     console.log( location.coords.latitude) ; 
-    setLocation( `${location.coords.longitude},${location.coords.latitude}`);
+    setLocation( `${location.coords.latitude},${location.coords.longitude}`);
  
   })();  
 
@@ -625,7 +842,13 @@ React.useEffect(() => {   // setting gps location
   
     
  const gpsHandler = () => { 
-  onState4Change( location) ;
+
+
+  console.log( state4) ; 
+  if(  state4 ===  false){
+    onState4Change( !state4 ) ;
+  }
+ 
   alert("Successfully captured GPS!") ; 
 }
 
@@ -635,13 +858,6 @@ React.useEffect(() => {   // setting gps location
   
       switch (  screentype ) {
         
-
-
-
-
-
-
-
 
 
 
@@ -660,16 +876,35 @@ React.useEffect(() => {   // setting gps location
              <StatusBar 
         barStyle="dark-content"  
         backgroundColor = '#fff'
-       />
+       />  
+
+{
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
+
+  }
             <View   style={styles.v1} >   
        
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
-                      placeholder="Code of Waste Segregator"   value= {  state1 }  onChangeText= { onState1Change } />
+                   placeholder="Code of Waste Segregator"   value= {  state1 }  onChangeText= { onState1Change } />
 
             <TouchableOpacity  style={styles.to1}  
             onPress = {( ) => { submitseg() }  }    
             > 
-                <Icon  name="arrow-right" size={27} color = "red" /> 
+                <Icon  name="arrow-right" size={27} color = "#fff" /> 
             </TouchableOpacity >    
 
       
@@ -690,14 +925,22 @@ React.useEffect(() => {   // setting gps location
               
               
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2} 
-                      placeholder={ state2}  editable= { false }
+                       placeholder={ state2}  editable= { false }
                                      />
 
                                      
-            <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2}  
+                   <View style={styles.ip2} >                       
+            <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.dateInput}   
              value= {  state3 }  onChangeText= { onState3Change }
-                      placeholder="Date of Entry (dd-mm-yyyy)"
+                     placeholder="Date of Entry (dd-mm-yyyy)"
                                      />
+            <TouchableOpacity  
+            onPress={ () => { showMode( 'date')}}
+            style={styles.to7 }>               
+            <MaterialCommunityIcons name="calendar-range" size={24} color="#000000" />
+            </TouchableOpacity>  
+                       </View>
+  
 
            <View  style={styles.v5} > 
      
@@ -707,8 +950,8 @@ React.useEffect(() => {   // setting gps location
              <Text style={styles.t1} >Capture GPS</Text>   
             </TouchableOpacity>      
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip3}  
-                       
-                      placeholder= {state4 }
+                         editable= { false}
+                         placeholder={ ( state4 )? location : "Location" }
                   />
             </View>   
 
@@ -729,13 +972,13 @@ React.useEffect(() => {   // setting gps location
             <TouchableOpacity  style={ designchange  ? styles.to3 :  styles.to6 } 
                   onPress = {  ()  =>  { handler1() } }
              >
-            <Text>Primary</Text>
+            <Text  style= {  designchange ? { } : {  color : "#fff"}}>Primary</Text>
             </TouchableOpacity>  
 
             <TouchableOpacity  style= {  designchange  ? styles.to6 :  styles.to3 }  
                 onPress = {  ()  =>  { handler2() }} 
             >
-            <Text> Secondary</Text>
+            <Text  style= {  designchange ? {  color : "#fff" } : { }}> Secondary</Text>
 
             </TouchableOpacity>
          
@@ -748,14 +991,14 @@ React.useEffect(() => {   // setting gps location
            
               
               <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4} 
-                 value= {  state5 }  onChangeText= { onState5Change }
-                        placeholder="Quantity of Waste Segregated (in KGs)"
+                 value= {  state5 }  onChangeText= { onState5Change }    keyboardType="number-pad"
+                 placeholderTextColor='#ffffff8C'      placeholder="Quantity of Waste Segregated (in KGs)"
                     />  
   
                      
                   <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip4} 
-                     value= {  state6 }  onChangeText= { onState6Change }
-                        placeholder="Working Hours"
+                     value= {  state6 }  onChangeText= { onState6Change }  keyboardType="number-pad"
+                     placeholderTextColor='#ffffff8C'         placeholder="Number of working Hours"
                     />
                      
                      
@@ -763,8 +1006,8 @@ React.useEffect(() => {   // setting gps location
   
   
                   <TextInput   autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4}
-                      value= {  state10 }  onChangeText= { onState10Change }
-                        placeholder=  "Amount Paid (INR)"  
+                      value= {  state10 }  onChangeText= { onState10Change }  keyboardType="number-pad"
+                      placeholderTextColor='#ffffff8C'         placeholder=  "Amount Paid (INR)"  
                     />
   
 
@@ -788,14 +1031,14 @@ React.useEffect(() => {   // setting gps location
                
               
               <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4} 
-                value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5 ) } }
-                        placeholder="Quantity of Waste Segregated (in KGs)"
+                value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5 ) } }  keyboardType="number-pad"
+                placeholderTextColor='#ffffff8C'         placeholder="Quantity of Waste Segregated (in KGs)"
                     />  
   
                      
                   <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip4} 
                    value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }
-                        placeholder="Working Hours"
+                   placeholderTextColor='#ffffff8C'        placeholder="Number of working Hours"  keyboardType="number-pad"
                     />
                      
                      
@@ -803,8 +1046,8 @@ React.useEffect(() => {   // setting gps location
   
   
                   <TextInput   autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4}
-                      value= {  state10 }  onChangeText= { onState10Change }
-                        placeholder=  "Amount Paid (INR)"  
+                      value= {  state10 }  onChangeText= { onState10Change }   keyboardType="number-pad"
+                      placeholderTextColor='#ffffff8C'           placeholder=  "Amount Paid (INR)"  
                     />
 
               
@@ -872,7 +1115,26 @@ React.useEffect(() => {   // setting gps location
            <StatusBar 
         barStyle="dark-content"  
         backgroundColor = '#fff'
-       />
+       />  
+
+{
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
+
+  }
             <View   style={styles.v1} >   
        
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
@@ -881,7 +1143,7 @@ React.useEffect(() => {   // setting gps location
             <TouchableOpacity  style={styles.to1}  
             onPress = {( ) => { submitproc() }  }    
             > 
-                  <Icon  name="arrow-right" size={27} color = "red" /> 
+                  <Icon  name="arrow-right" size={27} color = "#fff" /> 
             </TouchableOpacity >    
 
       
@@ -901,12 +1163,18 @@ React.useEffect(() => {   // setting gps location
              <View style={styles.v3} > 
               
              
-
-                                     
-            <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2}  
+             <View style={styles.ip2} >                       
+            <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.dateInput}   
              value= {  state3 }  onChangeText= { onState3Change }
-                      placeholder="Date of Entry (dd-mm-yyyy)"
-                                     />  
+                    placeholder="Date of Entry (dd-mm-yyyy)"
+                                     />
+            <TouchableOpacity  
+            onPress={ () => { showMode( 'date')}}
+            style={styles.to7 }>               
+            <MaterialCommunityIcons name="calendar-range" size={24} color="#000000" />
+            </TouchableOpacity>  
+                                     </View>
+  
 
                
               
@@ -918,7 +1186,8 @@ React.useEffect(() => {   // setting gps location
              <Text style={styles.t1} >Capture GPS</Text>   
             </TouchableOpacity>      
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip3}  
-                      placeholder= {state4}
+                   editable= { false}
+                   placeholder={ ( state4 )? location : "Location" }
                   />
             </View>   
 
@@ -970,16 +1239,43 @@ React.useEffect(() => {   // setting gps location
               
 
               <View  style={styles.ip7} >
-              <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5} 
+
+           {/*    <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5} 
                 value= {  state11 }  onChangeText= {  onState11Change }
-                        placeholder="Stage of Processing"
-                    />  
-                
-            
+                placeholderTextColor='#ffffff8C'              placeholder="Stage of Processing"
+                    />   */}
+                 
+           <View style={ styles.ip5}>
+         <Dropdown 
+        
+        style={[styles.dropdown, isFocus3 && { borderColor: 'blue' }]}
+        placeholderStyle={styles.placeholderStyle1}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={ ProcessingStage }
+        labelField="TITLE"
+        valueField="ID"
+        value={ value5 }
+        placeholder=  { value5 }
+        onFocus={() => handler5() }
+        onBlur={() => setIsFocus3(false)}
+        onChange={item => {
+        
+        setValue4( item.TITLE) ;
+        handler6(  item.TITLE)  ; 
+        setIsFocus3(false);
+        }}
+       
+      />
+
+   </View> 
+              
+
               
               <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5} 
-                value= {  state5 }  onChangeText= {onState5Change  }
-                        placeholder="Quantity (in KGs)"
+                value= {  state5 }  onChangeText= {onState5Change  }   keyboardType="number-pad"
+                placeholderTextColor='#ffffff8C'         placeholder="Quantity (in KGs)"
                     />  
                  
 
@@ -987,14 +1283,14 @@ React.useEffect(() => {   // setting gps location
 
 
                 <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4} 
-                value= {  state6}  onChangeText= {onState6Change }
-                        placeholder="Workers Involved"
+                value= {  state6}  onChangeText= {onState6Change }  keyboardType="number-pad"
+                placeholderTextColor='#ffffff8C'            placeholder="Number of workers involved"
                     />  
 
 
                <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4} 
-                value= {  state10 }  onChangeText= { onState10Change }
-                        placeholder="Amount Paid (INR)"
+                value= {  state10 }  onChangeText= { onState10Change }  keyboardType="number-pad"
+                placeholderTextColor='#ffffff8C'          placeholder="Amount Paid (INR)"
                     />  
 
                
@@ -1076,16 +1372,34 @@ React.useEffect(() => {   // setting gps location
         barStyle="dark-content"  
         backgroundColor = '#fff'
        />
+   
+   {
+    show&& (
+   
+     <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display = 'default'
+          onChange={onChange}  
+          maximumDate = { new Date()}
+          minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
+        
+        
+     />
+    )
 
+  }
             <View   style={styles.v1} >   
        
             <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip1} 
-                      placeholder="Code of Waste Management Unit"   value= {  state1 }  onChangeText= { onState1Change } />
+             placeholder="Code of Waste Management Unit"   value= {  state1 }  onChangeText= { onState1Change } />
 
             <TouchableOpacity  style={styles.to1}  
             onPress = {( ) => { submittrans() }  }    
             > 
-                <Icon  name="arrow-right" size={27} color = "red" /> 
+                <Icon  name="arrow-right" size={27} color = "#fff" /> 
             </TouchableOpacity >    
 
       
@@ -1105,18 +1419,20 @@ React.useEffect(() => {   // setting gps location
               
              
 
-                                     
-              <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip2}  
-               value= {  state3 }  onChangeText= { onState3Change }
-                        placeholder="Date of Entry (dd-mm-yyyy)"
-                                       />  
+                <View style={styles.ip2} >                       
+            <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.dateInput}   
+             value= {  state3 }  onChangeText= { onState3Change }
+                   placeholder="Date of Entry (dd-mm-yyyy)"
+                                     />
+            <TouchableOpacity  
+            onPress={ () => { showMode( 'date')}}
+            style={styles.to7 }>               
+            <MaterialCommunityIcons name="calendar-range" size={24} color="#000000" />
+            </TouchableOpacity>  
+                                     </View>
   
   
-                  <View  style={styles.v5} >    
-                    </View>
-  
-                 
-                
+                      
              <View  style={styles.v5} > 
        
               <TouchableOpacity style={styles.to2}  
@@ -1124,7 +1440,8 @@ React.useEffect(() => {   // setting gps location
                <Text style={styles.t1} >Capture GPS</Text>   
               </TouchableOpacity>      
               <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip3}  
-                        placeholder= { state4 }
+                      editable= { false}
+                      placeholder={ ( state4 )? location : "Location" }
                     />
               </View>   
   
@@ -1155,10 +1472,10 @@ React.useEffect(() => {   // setting gps location
                      selectedTextStyle={styles.selectedTextStyle}
                      inputSearchStyle={styles.inputSearchStyle}
                      iconStyle={styles.iconStyle}
-                     data={dropdowndata1}
+                     data={dropdowndata3}
                      labelField="label"
                      valueField="value"
-                     placeholder=  "Types of Plastic"
+                     placeholder=  "Types of Waste"
                      value={value1}
                      onFocus={() => setIsFocus1(true)}
                      onBlur={() => setIsFocus1(false)}
@@ -1180,13 +1497,13 @@ React.useEffect(() => {   // setting gps location
              
              <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5}  
                    value= {  state11 }  onChangeText= { onState11Change } 
-                       placeholder="From (Place)"
+                   placeholderTextColor='#ffffff8C'       placeholder="From (Place)"
                    />  
  
                     
                  <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip5}
                        placeholder="To (Place)" 
-                       value= {  state12 }  onChangeText= { onState12Change }
+                       placeholderTextColor='#ffffff8C'         value= {  state12 }  onChangeText= { onState12Change }
                    />
                     
                     </View>
@@ -1195,14 +1512,14 @@ React.useEffect(() => {   // setting gps location
             <View  style={styles.ip7}> 
              
              <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip5}  
-                 value= {  state10 }  onChangeText= { onState10Change }
-                       placeholder="Quantity (in KGs)"
+                 value= {  state10 }  onChangeText= { onState10Change }  keyboardType="number-pad"
+                 placeholderTextColor='#ffffff8C'      placeholder="Quantity (in KGs)"
                    />  
  
                     
                  <TextInput  autoCapitalize='none'   autoCorrect={ false}    style={styles.ip5}
-                       placeholder="Number of Vehicles" 
-                       value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5) }  }
+                       placeholder="Number of Vehicles"   keyboardType="number-pad"
+                       placeholderTextColor='#ffffff8C'       value= {  state5 }  onChangeText= {( state5 ) => { handler3( state5) }  }
                    />
                     
                     </View>
@@ -1210,14 +1527,16 @@ React.useEffect(() => {   // setting gps location
 
                <TextInput  autoCapitalize='none'   autoCorrect={ false}     style={styles.ip4}  
             
-                 value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }
-                       placeholder="Cost per Unit (INR)"
+                 value= {  state6 }  onChangeText= {( state6 ) => { handler4( state6) }  }  keyboardType="number-pad"
+                 placeholderTextColor='#ffffff8C'           placeholder="Cost per Unit (INR)"
                    />  
  
                   
 
                  <TextInput  autoCapitalize='none'   autoCorrect={ false}   style={styles.ip4} 
-                      placeholder= { `Total Cost( INR )  = ${ state7}` }    editable = {  false }
+        placeholderTextColor='#ffffff8C'    
+          
+        placeholder= { `Total Cost( INR )  = ${ state7}` }    editable = {  false }
                    />
  
 
@@ -1250,7 +1569,10 @@ React.useEffect(() => {   // setting gps location
 
    }  
      
-  }
+  }  
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
   
   const styles = StyleSheet.create({
     container: {
@@ -1331,7 +1653,8 @@ React.useEffect(() => {   // setting gps location
     borderColor : "grey"  , 
     borderWidth : 1 , 
     borderRadius : 28 ,  
-
+    flexDirection : "row"  , 
+    overflow : "hidden"  ,
 
   }
 , 
@@ -1355,7 +1678,7 @@ ip3  :  {
     flex : -1 ,
     width : "80%" ,
     height :  "10%" , 
-   
+    color : "#fff"  , 
     textAlign : "left"  , 
     borderColor : "#fff"  , 
     borderWidth : 1 , 
@@ -1380,6 +1703,8 @@ ip3  :  {
     borderRadius : 28 ,  
     flexDirection : "row"  , 
     textAlign : "center"  , 
+    color : "#fff"  , 
+    overflow : "hidden"  , 
 
 
 
@@ -1407,17 +1732,20 @@ ip3  :  {
    to1 : {
      
     flex : -1 ,   
-    width : "10%"  , 
-    height : "50%"  ,    
+    width :  windowWidth / 9  , 
+    height :  windowWidth / 9 ,    
+     
     borderRadius : 50  , 
-    backgroundColor :  "black"  , 
+    backgroundColor :  "#547AA3"  , 
+    alignItems : "center"  , 
+    justifyContent : "center"  , 
 
    }  , 
 
     to2 : {
         
       flex : -1 ,   
-      width : "40%"  , 
+      width : "37%"  , 
       height : "100%"  ,  
       backgroundColor : "#78AFEA"    , 
       justifyContent  : "center"   , 
@@ -1431,10 +1759,11 @@ ip3  :  {
 
       flex : -1 ,   
       width : "40%"  , 
-      height : "30%"  ,   
+      height : "40%"  ,   
       backgroundColor : "#fff"  , 
       borderRadius : 5 ,     
       alignItems  :  "center"  , 
+      justifyContent : "center"  ,
 
     }   ,    
 
@@ -1454,10 +1783,23 @@ ip3  :  {
 
       flex : -1 ,   
       width : "40%"  , 
-      height : "30%"  ,   
-      backgroundColor : "#3B4D61"  , 
+      height : "40%"  ,   
+      backgroundColor : "#547AA3"  , 
       borderRadius : 5 ,     
       alignItems  :  "center"  , 
+      justifyContent : "center"  ,
+
+
+     }  
+
+     ,  to7 : {
+
+      flex : -1 ,   
+      width : "20%"  , 
+      height : "100%"  ,   
+      backgroundColor : "#fff"  ,  
+      alignItems  :  "center"  ,
+      justifyContent : "center"  
 
 
      }
@@ -1506,11 +1848,25 @@ ip3  :  {
 
 
     t1  :  {
-
+            
+      color : "#fff"  , 
+      fontWeight: '600' ,
+      fontStyle: 'normal'  , 
+       fontSize:12 , 
+      lineHeight: 22, 
+      letterSpacing: -0.408 ,
+      color : "#fff"
 
     }   ,    
 
+   
+    dateInput : {
 
+      flex : -1 ,
+      width : "80%" ,
+      height :  "100%" ,   
+
+    }  , 
     // dropdown style 
 
 
@@ -1530,15 +1886,22 @@ ip3  :  {
     },
 
     placeholderStyle: {
-      fontSize: 16,
-      fontWeight : "300" ,   
+      fontSize: 14,
+      
+      textAlign : "center"
+   
+    }, 
+
+    placeholderStyle1: {
+      fontSize: 14,
+      color : "#ffffff8C"  , 
       textAlign : "center"
    
     },
     selectedTextStyle: { 
        
-
-      fontSize: 16 , 
+      textAlign : "center" , 
+      fontSize: 14 , 
   
     },
     iconStyle: {
@@ -1548,7 +1911,7 @@ ip3  :  {
 
     inputSearchStyle: {
       height: 40,
-      fontSize: 16,
+      fontSize: 14,
     },
   
    

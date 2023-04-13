@@ -5,7 +5,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default function  Summary( { route ,  navigation }) {
  
    let screentype= route.params.screentype ; 
+  
 
+   //console.log( "sumtable")  ; 
+   //console.log(  route.params.token)  ; 
 
   switch (  screentype ) {
         
@@ -25,7 +28,7 @@ export default function  Summary( { route ,  navigation }) {
 
   <View View  style={styles.v2} >
    <TouchableOpacity      style={styles.to1}
-       onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "wastecollectionst"  ,  prop1 : "Waste Collector"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Total Cost"   } )}}
+       onPress = {  ( ) => { navigation.navigate("Summary View"  , {  token : route.params.token ,  api_end : "wastecollectionst"  ,  prop1 : "Waste Collector"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Total Cost"  , name : "Informal Waste Collector"  } )}}
    >
 
   <Text   style={styles.t2}>Summary Table</Text> 
@@ -48,7 +51,6 @@ export default function  Summary( { route ,  navigation }) {
 
      <View   style={styles.v1}>
     <TouchableOpacity  style={styles.to1}
-        onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "wastecollectionst" } )}}
     >  
 
     
@@ -65,7 +67,7 @@ export default function  Summary( { route ,  navigation }) {
 
     <View   style={styles.v2}>
     <TouchableOpacity   style={styles.to1}
-        onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "wastecollectionst" } )}}
+       
     >
      <Text   style={styles.t2}> 
       Transportation Summary Table
@@ -90,7 +92,7 @@ export default function  Summary( { route ,  navigation }) {
  
       <View   style={styles.v1}>
      <TouchableOpacity  style={styles.to1}
-         onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "wastecollectionst" } )}}
+
      >  
  
      
@@ -108,7 +110,7 @@ export default function  Summary( { route ,  navigation }) {
  
      <View   style={styles.v2}>
      <TouchableOpacity   style={styles.to1}
-         onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "wastecollectionst" } )}}
+
      >
       <Text   style={styles.t2}> 
        Transportation Summary Table
@@ -149,7 +151,7 @@ export default function  Summary( { route ,  navigation }) {
 
   <View View  style={styles.v2} >
    <TouchableOpacity      style={styles.to1}
-       onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "segregation_st"  ,  prop1 : "Waste Segregator"  , prop2 : "Waste Management Unit"  ,  prop3 : "Qunatity"  , prop4 : "Amount Paid"   }  )}}
+       onPress = {  ( ) => { navigation.navigate("Summary View"  , {   token : route.params.token , api_end : "segregation_st"  ,  prop1 : "Waste Segregator"  , prop2 : "Unit name"  ,  prop3 : "Qunatity"  , prop4 : "Payment"   }  )}}
    >
   <Text   style={styles.t2}>Summary Table</Text>
 
@@ -174,7 +176,7 @@ export default function  Summary( { route ,  navigation }) {
 
     <View   style={styles.v2}>
     <TouchableOpacity   style={styles.to1}
-        onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "processing_st"  ,   prop1 : "Waste Management Unit"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Amount Paid"   } )}}
+        onPress = {  ( ) => { navigation.navigate("Summary View"  , {   token : route.params.token  , api_end : "processing_st"  ,   prop1 : "Unit name"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Payment"   } )}}
     >
      <Text   style={styles.t2}> 
       Summary Table
@@ -204,7 +206,7 @@ export default function  Summary( { route ,  navigation }) {
  
      <View   style={styles.v2}>
      <TouchableOpacity   style={styles.to1}
-         onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "transportation_st"  ,  prop1 : "Waste Management Unit"  , prop2 : "Type of Waste"  ,  prop3 : "Qunatity"  , prop4 : "Total Cost"   } )}}
+         onPress = {  ( ) => { navigation.navigate("Summary View"  , {  token : route.params.token,  api_end : "transportation_st"  ,  prop1 : "Unit name"  , prop2 : "Type of Waste"  ,  prop3 : "Qunatity"  , prop4 : "Total Cost"   } )}}
      >
       <Text   style={styles.t2}> 
         Summary Table
@@ -240,7 +242,7 @@ export default function  Summary( { route ,  navigation }) {
 
   <View View  style={styles.v2} >
    <TouchableOpacity      style={styles.to1}
-       onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "pwaste_st"   ,    prop1 : "Buyer"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Total Amount"  } )}}
+       onPress = {  ( ) => { navigation.navigate("Summary View"  , {   token : route.params.token , api_end : "pwaste_st"   ,    prop1 : "Buyer"  , prop2 : "Type of Plastic"  ,  prop3 : "Qunatity"  , prop4 : "Payment"  } )}}
    >
   <Text   style={styles.t2}>Summary Table</Text> 
 
@@ -265,7 +267,7 @@ export default function  Summary( { route ,  navigation }) {
 
     <View   style={styles.v2}>
     <TouchableOpacity   style={styles.to1}
-        onPress = {  ( ) => { navigation.navigate("SummaryView"  , { api_end : "owaste_st"  ,   prop1 : "Buyer"  , prop2 : "Type of Waste"  ,  prop3 : "Qunatity"  , prop4 : "Total Amount"  } )}}
+        onPress = {  ( ) => { navigation.navigate("Summary View"  , {  token : route.params.token  , api_end : "owaste_st"  ,   prop1 : "Buyer"  , prop2 : "Type of Waste"  ,  prop3 : "Qunatity"  , prop4 : "Payment"  } )}}
     >
      <Text   style={styles.t2}> 
       Summary Table
@@ -294,6 +296,8 @@ export default function  Summary( { route ,  navigation }) {
       flex: 1 ,  
       backgroundColor : '#fff'  , 
        alignItems : "center"  , 
+       paddingLeft:5 , 
+       paddingRight : 3 , 
 
     },  
 

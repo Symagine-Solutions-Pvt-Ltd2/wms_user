@@ -10,11 +10,20 @@ export default function Viewlist( {  route  ,  navigation  }) {
 
   const [   data  , setData  ] = useState([]) ;   //   data  for showing all the info     
   const [   loading   , setLoading   ] = useState( true ) ;  
+  const [   pageNo   , setPageNo   ] = useState( 1 ) ;  
  
-  console.log(  route.params.prop1) ; 
+  
   let api_end =  route.params.api_end  ; 
+   
+  
+  
+  console.log( "inview" ) ; 
+  console.log(  route.params.token  ) ; 
 
-  const  base_url  = `http://10.0.2.2:8000/user/${api_end}` ; 
+
+
+
+  const  base_url  = `http://clean-sundarbans.com:5000/user/${api_end}` ; 
     
      
 
@@ -25,13 +34,13 @@ export default function Viewlist( {  route  ,  navigation  }) {
           headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'  ,
-            'token' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF9pZCI6InJpbW1vQGhtYWlsLmNvbSIsInJvbGVfaWQiOiIyIiwiX2lkIjoiNjNmZWVlYWZmNWQwYTkxNWRhNDFlNTY5IiwiZXhwIjoxNjc5MDQ0ODI4fQ.JwPrWBZz3j2eVVs62NPvKRBnfL4OG8LaXQT1sUThaFQ"
+            'token' :   route.params.token  , 
         }
     , 
     body: JSON.stringify({
        
       search_key :"",
-      page_no :"1",
+      page_no : pageNo,
       limit :"10"
  
   }),
@@ -39,7 +48,9 @@ export default function Viewlist( {  route  ,  navigation  }) {
      );
       const json = await response.json();
         console.log(json.data);  
-        setData( json.data)
+        setData( json.data) ;
+        alert( json.message) ;  
+         
     } catch (error) {
       console.error(error);
     }  
@@ -48,9 +59,32 @@ export default function Viewlist( {  route  ,  navigation  }) {
   useEffect(() => {
     getData();  
 
-  }, [ ]);
+  }, [ pageNo ]);
 
    
+  
+
+  const handler3 = () => {
+    
+    console.log( "handler3") ;
+    
+    if(  pageNo >= 2){
+
+      setPageNo(  pageNo - 1)  ; 
+    }
+        
+   }
+
+   const  handler4 = () => {
+      
+    console.log( "handler4" ) ;
+
+ 
+
+      setPageNo(  pageNo + 1 )  ; 
+    
+        
+   }
 
   return (
     <View style={styles.container}> 
@@ -119,13 +153,17 @@ export default function Viewlist( {  route  ,  navigation  }) {
 
        <View  style={styles.v4}>
          
-         <TouchableOpacity style={styles.to1}>
-         <Icon  name="arrow-left" size={27} /> 
+         <TouchableOpacity 
+          onPress = { () => { handler3()}}
+         style={styles.to1}> 
+         <Icon  name="arrow-left" size={27}  color = '#fff' /> 
 
          </TouchableOpacity> 
 
-         <TouchableOpacity style={styles.to2}>
-         <Icon  name="arrow-right" size={27} /> 
+         <TouchableOpacity style={styles.to2} 
+                 onPress = { () => { handler4()}}
+           >
+         <Icon  name="arrow-right" size={27}  color = '#fff' /> 
 
          </TouchableOpacity>
       </View>
@@ -227,8 +265,11 @@ const styles = StyleSheet.create({
 
        height : "100%"  , 
        width : "30%" ,
-       backgroundColor : "#333D79" , 
+       backgroundColor : "#78AFEA" , 
        borderRadius : 8 , 
+       color: "#fff" , 
+       textAlign : "center" , 
+       textAlignVertical : "center" , 
 
     } , 
 
@@ -236,8 +277,11 @@ const styles = StyleSheet.create({
 
       height : "100%"  , 
       width : "30%" ,
-      backgroundColor : "#333D79" , 
+      backgroundColor : "#78AFEA" , 
       borderRadius : 8 , 
+      color: "#fff" , 
+       textAlign : "center" , 
+       textAlignVertical : "center" , 
 
    }  , 
 
@@ -245,8 +289,11 @@ const styles = StyleSheet.create({
 
     height : "100%"  , 
     width : "17%" ,
-    backgroundColor : "#333D79" , 
+    backgroundColor : "#78AFEA" , 
     borderRadius : 8 , 
+    color: "#fff" , 
+       textAlign : "center" , 
+       textAlignVertical : "center" , 
 
  }  ,  
 
@@ -255,7 +302,8 @@ const styles = StyleSheet.create({
   height : "100%"  , 
   width : "30%" ,
   backgroundColor : "#fff" , 
- 
+  textAlign : "center" , 
+  textAlignVertical : "center" , 
     
 
  }  , 
@@ -266,7 +314,8 @@ const styles = StyleSheet.create({
   height : "100%"  , 
   width : "30%" ,
   backgroundColor : "#fff" , 
-
+  textAlign : "center" , 
+  textAlignVertical : "center" , 
 
 } , 
 
@@ -276,7 +325,8 @@ t6 : {
   height : "100%"  , 
   width : "17%" ,
   backgroundColor : "#fff" , 
-
+  textAlign : "center" , 
+  textAlignVertical : "center" , 
 
 
 }  , 
@@ -285,7 +335,12 @@ t7 : {
 
 height : "100%"  , 
 width : "20%" ,
-backgroundColor : "#333D79" , 
+backgroundColor : "#78AFEA" , 
+borderRadius : 8 , 
+color: "#fff" , 
+textAlign : "center" , 
+textAlignVertical : "center" , 
+
 
 
 }  ,  
@@ -295,7 +350,8 @@ t8 : {
   height : "100%"  , 
   width : "20%" ,
   backgroundColor : "#fff" , 
-
+  textAlign : "center" , 
+  textAlignVertical : "center" , 
 }  , 
 
 
@@ -304,8 +360,10 @@ t8 : {
 
     height : '80%'  , 
     width : "20%"  , 
-     backgroundColor : "#333D79" , 
+     backgroundColor : "#78AFEA" , 
      borderRadius : 8 , 
+     alignItems : "center" , 
+     justifyContent : "center"  , 
 
 
   }  , 
@@ -314,8 +372,10 @@ t8 : {
 
     height : '80%'  , 
     width : "20%"  , 
-     backgroundColor : "#333D79" , 
+     backgroundColor : "#78AFEA" , 
      borderRadius : 8 , 
+     alignItems : "center" , 
+     justifyContent : "center"  , 
 
 
   }
