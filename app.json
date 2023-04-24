@@ -25,6 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.rimii.wmapp"
     },
     "web": {
@@ -32,7 +33,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "6be87e5b-ed13-4a4a-af20-5d67cf90020a"
+        "projectId": "77ec8d2d-df90-4276-8cdd-6295250d62ac"
       }
     }
   }

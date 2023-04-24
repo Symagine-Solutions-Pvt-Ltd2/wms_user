@@ -453,6 +453,7 @@ export default function Sales ( {   route , navigation  }) {
       
     console.log( state8)  ; 
     console.log( state1)  ;
+   
 
     console.log( state3)  ; 
     console.log( state4)  ; 

@@ -35,7 +35,7 @@ export default function App() {
            
            
          <Stack.Screen name="Home" component={ Home}  options={{    headerStyle: {
-      backgroundColor: '#78AFEA'   } ,   headerTintColor:  '#fff'     }}   
+      backgroundColor: '#78AFEA'   } ,  headerBackVisible : false  ,  headerShadowVisible : false  ,  headerTintColor:  '#78AFEA'     }}   
        />   
 
        <Stack.Screen name="PlasticProcessing" component={ PlasticProcessing}  options={{    headerStyle: {
@@ -46,8 +46,8 @@ export default function App() {
       backgroundColor: '#78AFEA'   } ,   headerTintColor:  '#fff'     }}   
        />              
 
-      <Stack.Screen name= "SummaryTable" component={ SummaryTable }  options={{    headerStyle: {
-      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'   , headerShadowVisible : false  }}    
+      <Stack.Screen name= "Summary Table" component={ SummaryTable }  options={{    headerStyle: {
+      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'    }}    
           
        />  
 
@@ -60,8 +60,10 @@ export default function App() {
 
 
          
-      <Stack.Screen name= "SummaryView" component={ SummaryView }  options={{    headerStyle: {
-      backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#fff'   , headerShadowVisible : false  }}    
+      <Stack.Screen name= "Summary View" component={ SummaryView }   options={  ({ route }) => ({   headerTitle : route.params.name   , 
+           headerStyle: {
+      backgroundColor: '#78AFEA'   }   ,      headerTintColor:  '#fff'
+               })}    
           
        />   
         
