@@ -332,11 +332,9 @@ export default function WasteCollection ( {   route , navigation  }) {
         if(   json.message ===  "submitted Successfully." ) {
           
           alert(  json.message );
-          onState8Change("") ;
-          onState1Change("") ;
-          onState4Change(  false  ) ;
-          onState2Change("Code of Waste Management Unit") ;
-          onState3Change("") ;
+       
+        
+       
           onState6Change("") ;
           onState5Change("") ; 
           onState10Change("") ; 
@@ -409,11 +407,7 @@ export default function WasteCollection ( {   route , navigation  }) {
         if(   json.message ===  "submitted Successfully." ) {
           
           alert(  json.message );
-          onState8Change("") ;
-          onState1Change("") ;
-          onState4Change(  false  ) ;
-          onState2Change("Code of Waste Management Unit") ;
-          onState3Change("") ;
+        
           onState6Change("") ;
           onState5Change("") ; 
           onState10Change("") ; 
@@ -559,16 +553,16 @@ export default function WasteCollection ( {   route , navigation  }) {
         if(   json.message ===  "submitted Successfully." ) {
           
           alert(  json.message );
-          onState8Change("") ;
-          onState1Change("") ; 
-          onState4Change(  false ) ;
-          onState3Change("") ;
+     
+        
+         
+          setDropdownValue1("")  ; 
+          setValue1("") ;
           onState5Change("") ; 
           onState6Change("") ; 
           onState10Change("") ; 
           setValue5("Processing stage") ; 
           setValue4("")  ; 
-          setValue1("") ;
 
 
         }else{
@@ -727,10 +721,8 @@ export default function WasteCollection ( {   route , navigation  }) {
         if(   json.message ===  "submitted Successfully." ) {
           
           alert(  json.message );
-          onState8Change("") ;
-          onState1Change("") ; 
-          onState4Change(  false ) ;
-          onState3Change("") ;
+    
+   
           onState5Change( 0 ) ; 
           onState6Change( 0) ; 
           onState7Change( 0 ) ; 
@@ -738,6 +730,8 @@ export default function WasteCollection ( {   route , navigation  }) {
           onState11Change("") ; 
           onState12Change("") ;
           setValue1("") ;
+          setDropdownValue1("") ;
+    
 
 
         }else{

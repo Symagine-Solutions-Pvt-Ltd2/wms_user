@@ -59,7 +59,7 @@ export default function Sales ( {   route , navigation  }) {
 
 
   
-  const  handler5  = () => {   
+  const  handler5  = () => {     //  stages of processing  
   
     const pushdata =  async () => {  
   
@@ -416,17 +416,17 @@ export default function Sales ( {   route , navigation  }) {
           if(   json.message ===  "submitted Successfully." ) {
           
             alert(  json.message );
-            onState8Change("") ;
-            onState1Change("") ; 
-            onState2Change("") ; 
-            onState4Change(  false ) ;
-            onState3Change("") ;
+          
+      
             onState5Change( 0 ) ; 
             onState6Change( 0 ) ; 
             onState7Change( 0 ) ; 
+            setDropdownValue1("")  ; 
             setValue1("") ;
             setValue5("Processing stage") ; 
             setValue4("")  ; 
+          
+
   
   
           }else{
@@ -501,15 +501,15 @@ export default function Sales ( {   route , navigation  }) {
           if(   json.message ===  "submitted Successfully." ) {
           
             alert(  json.message );
-            onState8Change("") ;
-            onState1Change("") ; 
-            onState2Change("") ; 
-            onState4Change(  false ) ;
-            onState3Change("") ;
+          
+        
+       
+      
             onState5Change(0) ; 
             onState6Change( 0) ; 
             onState7Change( 0 ) ; 
             setValue1("") ;
+            setDropdownValue1("")  ; 
   
   
   
@@ -633,8 +633,6 @@ export default function Sales ( {   route , navigation  }) {
           onChange={onChange}  
           maximumDate = { new Date()}
           minimumDate ={ new Date( mindate.getFullYear()  , mindate.getMonth()  , mindate.getDate()+1 )  }
-        
-        
      />
     )
 
@@ -1384,7 +1382,7 @@ const windowHeight = Dimensions.get('window').height;
   
       selectedTextStyle: { 
          
-  
+        textAlign : "center"   , 
         fontSize: 16 , 
     
       },

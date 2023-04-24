@@ -444,15 +444,7 @@ export default function WasteCollection ( {   route , navigation  }) {
  const submit1  = () => {    // for registering the data   (  plastic )
    
     
-  console.log( state1)  ; 
-  console.log( state2)  ; 
-  console.log( state3)  ; 
-  console.log( state4)  ; 
-  console.log( state5)  ; 
-  console.log( state6)  ; 
-  console.log( state7)  ;  
-  console.log( state8)  ;   
-  console.log( value1 ) ; 
+  console.log( location )  ; 
 
 
   const pushdata =  async () => {  
@@ -494,15 +486,14 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
         alert( json.message) ; 
-  onState8Change("") ;
-  onState1Change("") ;
-  onState4Change(  false  ) ;
-  onState2Change("Code of Waste Management Unit") ;
-  onState3Change("") ;
+ 
+
+
    setValue1("")  ; 
   onState5Change(  0) ;
   onState6Change( 0 ) ;
   onState7Change( 0 ) ; 
+  setDropdownValue1("") ; 
 
 
        }
@@ -580,11 +571,8 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
         alert( json.message) ; 
-        onState8Change("") ;
-        onState1Change("") ;
-        onState4Change(  false ) ;
-        onState2Change("Code of Waste Management Unit") ;
-        onState3Change("") ;
+         
+        setDropdownValue2("")  ; 
          setValue2("")  ; 
       onState5Change(  0) ;
       onState6Change(  0) ;
@@ -669,14 +657,10 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
           alert( json.message) ; 
-          onState8Change("") ;
-          onState1Change("") ;
-          onState4Change(  false ) ;
-          onState3Change("") ;
-          onState13Change("")  ;
-          onState9Change( "" ) ; 
+      
           setValue1("")  ; 
         onState5Change(  0  ) ;
+        setDropdownValue1("")  ;
   
   
          }
@@ -744,7 +728,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   
       "wmu_code" :  state8 , 
       "wmu_name" :   state1 , 
-       "capture_gps" :  state4 , 
+       "capture_gps" :  location , 
        "date_of_entry" : state3 , 
       "no_of_participants" :  `${state9}`, 
        "location_of_cleanup" :  state13 , 
@@ -771,15 +755,12 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
         alert( json.message) ; 
-        onState8Change("") ;
-        onState1Change("") ;
-        onState4Change(  false ) ;
-        onState3Change("") ;
-        onState9Change(  "" )  ;
+      
+        
+  
         onState10Change( "" )  ; 
         onState11Change("") ;
         onState12Change("")  ; 
-        onState13Change("")  ; 
         onState5Change(  0 ) ;
         onState6Change(  0 ) ;
         onState7Change( 0 ) ; 
@@ -883,12 +864,10 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
           alert( json.message) ; 
-          onState8Change("") ;
-          onState1Change("") ;
-          onState4Change(  false ) ;
+       
           onState13Change("") ;
           onState12Change("") ; 
-          onState3Change("") ;
+          setDropdownValue1("")  ; 
            setValue1("")  ; 
         onState5Change(0 ) ;
         onState6Change(  0 ) ;
@@ -957,7 +936,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   
       "wmu_name" :   state1,
     "wmu_code" :  state8,
-    "capture_gps" :  state4 , 
+    "capture_gps" :  location , 
     "date_of_entry": state3 , 
      "from" :   state11 , 
      "to" :   state12 ,
@@ -980,10 +959,7 @@ export default function WasteCollection ( {   route , navigation  }) {
 
        
           alert( json.message) ; 
-          onState8Change("") ;
-          onState1Change("") ;
-          onState3Change("") ;
-          onState4Change(  false ) ;
+      
           onState10Change("") ; 
           onState11Change("") ; 
           onState12Change("") ; 
