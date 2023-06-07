@@ -803,21 +803,11 @@ export default function WasteCollection ( {   route , navigation  }) {
  
  const submit5  = () => {    // (  os2)
    
-    
-  console.log( state8)  ; 
-  console.log( state1)  ;  
+     
 
-  console.log( state4)  ; 
-  console.log( state3)  ; 
-  console.log(  value1)  ;   
-
-  console.log( state13)  ;  
-  console.log( state11)  ; 
+  console.log("in submit buuton ") ;
   console.log( state12)  ; 
-  console.log( state5)  ; 
-  console.log( state6)  ; 
-  console.log( state7)  ; 
-
+  console.log( state13)  ; 
 
   const pushdata =  async () => {  
 
