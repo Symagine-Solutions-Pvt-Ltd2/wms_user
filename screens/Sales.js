@@ -64,7 +64,7 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/lists'  , 
         {    
           method: 'POST', 
      
@@ -232,7 +232,7 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/plasticwaste'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/plasticwaste'  , 
         {    
           method: 'POST', 
      
@@ -296,7 +296,7 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/otherwaste'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/otherwaste'  , 
         {    
           method: 'POST', 
      
@@ -380,7 +380,7 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/salesplasticwasteentry'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/salesplasticwasteentry'  , 
         {    
           method: 'POST', 
      
@@ -467,7 +467,7 @@ export default function Sales ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/salesotherwasteentry'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/salesotherwasteentry'  , 
         {    
           method: 'POST', 
      

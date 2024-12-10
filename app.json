@@ -24,16 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },   
+      },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.rimii.wmapp"  
+      "package": "com.rim908.wmapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "77ec8d2d-df90-4276-8cdd-6295250d62ac"
+        "projectId": "58ac1ff3-2ef5-4354-8687-ea3aa631c237"
       }
     }
   }

@@ -23,7 +23,7 @@ export default function Viewlist( {  route  ,  navigation  }) {
 
 
 
-  const  base_url  = `http://clean-sundarbans.com:5000/user/${api_end}` ; 
+  const  base_url  = `http://circsol.in:5000/user/${api_end}` ; 
     
      
 

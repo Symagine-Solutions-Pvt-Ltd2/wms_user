@@ -27,7 +27,7 @@ export default function App() {
 
   return (
       <NavigationContainer>
-         <Stack.Navigator initialRouteName= "LogIn" >
+         <Stack.Navigator initialRouteName= "LogIn"   >
 
          <Stack.Screen name="LogIn" component={LogIn}  options={{    headerStyle: {
       backgroundColor: '#78AFEA'   } ,      headerTintColor:  '#78AFEA'   , headerShadowVisible : false  }}   
@@ -100,7 +100,10 @@ backgroundColor: '#fff'   }
        
          </Stack.Navigator>
 
-      </NavigationContainer>
+      </NavigationContainer>  
+
+
+
   );
 }
 

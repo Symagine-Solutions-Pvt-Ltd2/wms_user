@@ -74,7 +74,7 @@ export default function WasteCollection ( {   route , navigation  }) {
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/lists'  , 
         {    
           method: 'POST', 
      
@@ -237,7 +237,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/wsegregator'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/wsegregator'  , 
       {    
         method: 'POST', 
    
@@ -300,7 +300,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/primarysegregation'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/primarysegregation'  , 
       {    
         method: 'POST', 
    
@@ -375,7 +375,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/secondarysegregation'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/secondarysegregation'  , 
       {    
         method: 'POST', 
    
@@ -437,7 +437,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/wmuview'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/wmuview'  , 
       {    
         method: 'POST', 
    
@@ -517,7 +517,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/processing'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/processing'  , 
       {    
         method: 'POST', 
    
@@ -596,7 +596,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/transportation'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/transportation'  , 
       {    
         method: 'POST', 
    
@@ -679,7 +679,7 @@ export default function WasteCollection ( {   route , navigation  }) {
   const pushdata =  async () => {  
 
     try {
-      const response = await fetch( 'http://clean-sundarbans.com:5000/user/transportationentry'  , 
+      const response = await fetch( 'http://circsol.in:5000/user/transportationentry'  , 
       {    
         method: 'POST', 
    

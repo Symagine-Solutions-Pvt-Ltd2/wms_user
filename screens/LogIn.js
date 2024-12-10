@@ -123,7 +123,7 @@ export default function LogIn(   { navigation  }) {
     const pushdata =  async () => {  
 
    try {
-     const response = await fetch( 'http://clean-sundarbans.com:5000/user/registeruser'  , 
+     const response = await fetch( 'http://circsol.in:5000/user/registeruser'  , 
      {   method: 'POST', 
 
          headers: {
@@ -188,7 +188,7 @@ const submit2  = ()  => {
   const pushdata =  async () => {  
 
  try {
-   const response = await fetch( 'http://clean-sundarbans.com:5000/user/loginuser'  , 
+   const response = await fetch( 'http://circsol.in:5000/user/loginuser'  , 
    {   
     
     method: 'POST', 
@@ -319,7 +319,8 @@ console.log("bhjgnagxaxh")  ;
    
          
 
-       <View style={styles.ip2}   >
+       <View style={styles.ip2}   > 
+       
    <TextInput  autoCapitalize='none'   autoCorrect={ false}  style={styles.ip6} 
       secureTextEntry={ visible}       placeholder="Password"  value= { Password2  }   onChangeText = {  onChangePassword2}/>     
 

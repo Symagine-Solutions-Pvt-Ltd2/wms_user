@@ -22,7 +22,7 @@ import React, { useState } from 'react';
     const pushdata =  async () => {  
   
       try {
-        const response = await fetch( 'http://clean-sundarbans.com:5000/user/lists'  , 
+        const response = await fetch( 'http://circsol.in:5000/user/lists'  , 
         {    
           method: 'POST', 
      
